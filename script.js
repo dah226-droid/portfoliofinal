@@ -188,21 +188,24 @@
     return easeInOutCubic(t);
   }
 
-  function computeMagneticNudge(rect, cursorX, cursorY, index) {
+  function computeMagneticNudge(rect, cursorX, cursorY, index, options = {}) {
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
     const dx = cx - cursorX;
     const dy = cy - cursorY;
     const distance = Math.hypot(dx, dy);
-    const radius = Math.max(rect.width, rect.height) * 1.3;
+    const radiusScale = options.radiusScale ?? 1.3;
+    const strengthX = options.strengthX ?? (18 + (index % 2) * 4);
+    const strengthY = options.strengthY ?? 14;
+    const radius = Math.max(rect.width, rect.height) * radiusScale;
 
     if (distance > radius || distance === 0) {
       return { x: 0, y: 0 };
     }
 
     const force = Math.pow(1 - distance / radius, 1.35);
-    const nudgeX = (dx / distance) * force * (18 + (index % 2) * 4);
-    const nudgeY = (dy / distance) * force * 14;
+    const nudgeX = (dx / distance) * force * strengthX;
+    const nudgeY = (dy / distance) * force * strengthY;
     return { x: nudgeX, y: nudgeY };
   }
 
@@ -353,6 +356,39 @@
 
   function initMagneticAboutName() {
     initMagneticText(aboutName);
+  }
+
+  function initMagneticDisciplines() {
+    if (prefersReducedMotion || !window.matchMedia('(pointer: fine)').matches) return;
+
+    const disciplines = Array.from(document.querySelectorAll('.discipline'));
+    if (!disciplines.length) return;
+
+    function apply(cursorX, cursorY) {
+      disciplines.forEach((el, index) => {
+        const { x, y } = computeMagneticNudge(
+          el.getBoundingClientRect(),
+          cursorX,
+          cursorY,
+          index,
+          { radiusScale: 2.6, strengthX: 28, strengthY: 22 }
+        );
+        el.style.setProperty('--mag-x', `${x.toFixed(1)}px`);
+        el.style.setProperty('--mag-y', `${y.toFixed(1)}px`);
+      });
+    }
+
+    function reset() {
+      disciplines.forEach((el) => {
+        el.style.setProperty('--mag-x', '0px');
+        el.style.setProperty('--mag-y', '0px');
+      });
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      apply(e.clientX, e.clientY);
+    });
+    window.addEventListener('blur', reset);
   }
 
   function ensureCascadeLayer() {
@@ -1192,6 +1228,7 @@
   if (isHomePage) {
     initMagneticHeroName();
     initMagneticBlocks();
+    initMagneticDisciplines();
     initNavAboutCue();
   }
 

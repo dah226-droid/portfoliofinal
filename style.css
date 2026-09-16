@@ -266,8 +266,6 @@ body.custom-cursor-active button {
   height: 0.42em;
   background: var(--purple);
   border-radius: 1em 0.35em 1.4em 0.55em / 0.9em 1.1em 0.45em 1.2em;
-  transform: rotate(-0.8deg);
-  transform-origin: left center;
   pointer-events: none;
 }
 
@@ -541,86 +539,91 @@ body.custom-cursor-active button {
   75%      { transform: rotate(calc(var(--tilt) + 2deg)) translate3d(calc(var(--mag-x, 0px) + 1px), calc(var(--mag-y, 0px) - 1px), 0); }
 }
 
-/* ============ Discipline scatter ============ */
+/* ============ Discipline scatter (in hero, near scroll arrow) ============ */
 .discipline-scatter {
-  position: relative;
-  z-index: 5;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: clamp(2.5rem, 6vh, 4.5rem) clamp(1.5rem, 4vw, 3rem);
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--hero-gap) * 3.4);
+  z-index: 2;
   width: 100%;
-  box-sizing: border-box;
+  height: min(32vh, 16rem);
   margin: 0;
-  padding: clamp(3rem, 8vh, 6rem) 6vw clamp(4rem, 10vh, 7rem);
-  background: var(--paper);
+  padding: 0;
+  background: transparent;
   overflow: visible;
+  pointer-events: none;
 }
 
 .discipline {
-  position: relative;
+  position: absolute;
   margin: 0;
-  color: var(--purple);
+  color: var(--gray);
   line-height: 1;
   white-space: nowrap;
-  opacity: 1;
+  opacity: 0.92;
+  --mag-x: 0px;
+  --mag-y: 0px;
+  transform: rotate(var(--tilt, 0deg)) translate3d(var(--mag-x), var(--mag-y), 0);
+  will-change: transform;
 }
 
 .discipline--ux {
-  justify-self: start;
+  left: 9vw;
+  bottom: 59%;
+  --tilt: -7deg;
   font-family: "Syne", "Be Vietnam Pro", sans-serif;
   font-weight: 700;
-  font-size: clamp(2.4rem, 7vw, 5rem);
+  font-size: clamp(1.25rem, 2.8vw, 1.9rem);
   letter-spacing: 0.04em;
-  transform: rotate(-7deg);
   animation: discipline-drift-a 7s ease-in-out infinite;
 }
 
 .discipline--graphic {
-  justify-self: end;
+  left: 24vw;
+  bottom: 68%;
+  --tilt: 6deg;
   font-family: "Instrument Serif", Georgia, serif;
   font-weight: 400;
   font-style: italic;
-  font-size: clamp(2.5rem, 7.5vw, 5.4rem);
-  transform: rotate(6deg);
-  margin-top: 2.5rem;
+  font-size: clamp(1.3rem, 3vw, 2rem);
   animation: discipline-drift-b 8.5s ease-in-out infinite;
 }
 
 .discipline--product {
-  justify-self: center;
+  left: 8vw;
+  bottom: 17%;
+  --tilt: 3deg;
   font-family: "Space Grotesk", "Be Vietnam Pro", sans-serif;
   font-weight: 600;
-  font-size: clamp(2rem, 5.5vw, 4rem);
+  font-size: clamp(1.2rem, 2.6vw, 1.8rem);
   letter-spacing: 0.02em;
-  transform: rotate(3deg);
-  color: var(--purple-deep);
   animation: discipline-drift-c 6.5s ease-in-out infinite;
 }
 
 .discipline--web {
-  justify-self: end;
+  left: 28vw;
+  bottom: 28%;
+  --tilt: -5deg;
   font-family: "Caveat", "Barrio", cursive;
   font-weight: 600;
-  font-size: clamp(2.8rem, 8vw, 5.6rem);
-  transform: rotate(-5deg);
-  margin-right: 4vw;
+  font-size: clamp(1.5rem, 3.4vw, 2.25rem);
   animation: discipline-drift-a 9s ease-in-out infinite reverse;
 }
 
 @keyframes discipline-drift-a {
   0%, 100% { translate: 0 0; }
-  50% { translate: 0 -0.45rem; }
+  50% { translate: 0 -0.35rem; }
 }
 
 @keyframes discipline-drift-b {
   0%, 100% { translate: 0 0; }
-  50% { translate: 0.35rem -0.25rem; }
+  50% { translate: 0.25rem -0.2rem; }
 }
 
 @keyframes discipline-drift-c {
   0%, 100% { translate: 0 0; }
-  50% { translate: -0.3rem 0.35rem; }
+  50% { translate: -0.2rem 0.25rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1273,58 +1276,6 @@ body.custom-cursor-active button {
   margin-bottom: calc(var(--section-gap, 3.5rem) * 1.1);
 }
 
-.hobbies-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: clamp(1.75rem, 4vw, 3.5rem) clamp(2rem, 5vw, 4.5rem);
-}
-
-.hobby {
-  margin: 0;
-  color: var(--purple);
-  line-height: 1.1;
-  white-space: nowrap;
-}
-
-.hobby--animals {
-  font-family: "Caveat", "Barrio", cursive;
-  font-weight: 600;
-  font-size: clamp(2.2rem, 5.5vw, 4rem);
-  transform: rotate(-4deg);
-}
-
-.hobby--cooking {
-  font-family: "Instrument Serif", Georgia, serif;
-  font-style: italic;
-  font-size: clamp(2rem, 5vw, 3.6rem);
-  transform: rotate(3deg);
-}
-
-.hobby--travel {
-  font-family: "Syne", "Be Vietnam Pro", sans-serif;
-  font-weight: 700;
-  font-size: clamp(1.8rem, 4.5vw, 3.2rem);
-  transform: rotate(-2deg);
-}
-
-.hobby--photo {
-  font-family: "Space Grotesk", "Be Vietnam Pro", sans-serif;
-  font-weight: 600;
-  font-size: clamp(1.7rem, 4.2vw, 3rem);
-  color: var(--purple-deep);
-  transform: rotate(5deg);
-}
-
-.hobby--music {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  transform: rotate(-6deg);
-}
-
 .panel-contact {
   align-items: flex-start;
   min-height: auto;
@@ -1475,21 +1426,14 @@ body.custom-cursor-active button {
   }
 
   .discipline-scatter {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 3rem 5vw 4rem;
+    height: min(28vh, 12rem);
+    bottom: calc(var(--hero-gap) * 3.8);
   }
 
-  .discipline--ux,
-  .discipline--graphic,
-  .discipline--product,
-  .discipline--web {
-    justify-self: start;
-    margin: 0;
-  }
-
-  .discipline--graphic { justify-self: end; }
-  .discipline--web { justify-self: end; margin-right: 0; }
+  .discipline--ux { left: 5vw; bottom: 70%; }
+  .discipline--graphic { left: 18vw; bottom: 70%; }
+  .discipline--product { left: 5vw; bottom: 26%; }
+  .discipline--web { left: 22vw; bottom: 32%; }
 
   .hero {
     min-height: 100svh;
