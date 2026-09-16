@@ -1,0 +1,540 @@
+/* ============ Tokens ============ */
+:root {
+  --purple: #8c4a97;
+  --purple-deep: #6f3a7c;
+  --gray: #9a9a9a;
+  --gray-dark: #7a7a7a;
+  --ink: #3a3a3a;
+  --paper: #ffffff;
+
+  --font-display: "Barrio", system-ui;
+  --font-body: "Be Vietnam Pro", sans-serif;
+}
+
+.barrio-regular {
+  font-family: "Barrio", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.be-vietnam-pro-regular {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.be-vietnam-pro-medium {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  overflow-x: hidden;
+}
+
+body.custom-cursor-active {
+  cursor: none;
+}
+
+body.custom-cursor-active a,
+body.custom-cursor-active button {
+  cursor: none;
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  background: rgba(140, 74, 151, 0.62);
+  border: none;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(-100px, -100px, 0);
+  transition: background 0.2s ease;
+  will-change: transform;
+}
+
+.custom-cursor.is-hover {
+  background: rgba(140, 74, 151, 0.72);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .block { animation: none !important; transition: none !important; }
+  body.custom-cursor-active { cursor: auto; }
+  .custom-cursor { display: none; }
+}
+
+/* ============ Hero ============ */
+.hero-pin {
+  /* sticky through drop + shake + grey (~2.4vh); fall follows free page scroll */
+  height: 340vh;
+  position: relative;
+}
+
+.hero {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  height: 100vh;
+  padding: 8vh 6vw 18vh;
+  overflow: hidden;
+  background: var(--paper);
+  isolation: isolate;
+}
+
+.hero.is-releasing {
+  overflow: visible;
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--purple);
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  line-height: 0.95;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.hero-word {
+  display: inline-block;
+  transition: transform 0.18s ease-out;
+  will-change: transform;
+}
+
+.hero-top,
+.hero-question {
+  position: relative;
+  z-index: 3;
+}
+
+.hero-tagline {
+  text-align: right;
+  color: var(--gray);
+  font-size: clamp(1rem, 1.6vw, 1.35rem);
+  margin: calc(1.5rem + 1.4cm) 0 0;
+  max-width: 32ch;
+  margin-left: auto;
+}
+
+.hero-question {
+  margin-top: 14vh;
+  max-width: 46ch;
+}
+
+.hero-question-label {
+  color: var(--gray);
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  margin: 0 0 0.35rem;
+}
+
+.hero-question-main {
+  color: var(--purple);
+  font-weight: 400;
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  margin: 0;
+}
+
+/* ============ Falling block field ============ */
+.block-field {
+  position: absolute;
+  right: calc(7vw - 1.5cm);
+  bottom: -2vh;
+  width: min(28vw, 350px);
+  height: min(28vw, 350px);
+  pointer-events: none;
+  z-index: 1;
+  --block-size: 26%;
+}
+
+.block {
+  position: absolute;
+  width: var(--block-size, 26%);
+  height: var(--block-size, 26%);
+  aspect-ratio: 1 / 1;
+  border-radius: 30% 32% 34% 28% / 32% 30% 32% 34%;
+  will-change: transform, opacity;
+  transform-origin: center center;
+  --tilt: 0deg;
+  --mag-x: 0px;
+  --mag-y: 0px;
+  opacity: 0;
+  animation: none;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.block.gray   { background: var(--gray); }
+.block.purple { background: var(--purple); }
+.block.to-grey {
+  background: var(--gray) !important;
+  transition: background 0.35s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* mid-drop / bounce / exit: JS owns transform */
+.block-field.is-dropping .block,
+.block-field.is-bouncing .block,
+.block-field.is-exiting .block {
+  animation: none;
+}
+
+.block-field.is-exiting .block,
+.block-field.is-bouncing .block {
+  opacity: 1 !important;
+}
+
+/* after landing in hero: slow shake (keeps going while grey) */
+.block-field.is-landed .block {
+  opacity: 1;
+  animation: shake 1.15s ease-in-out infinite;
+}
+
+.block-field.is-exiting .block,
+.block-field.is-gone .block {
+  opacity: 1;
+}
+
+.block-field.is-gone {
+  visibility: hidden;
+}
+
+/* initial scatter (font-drop landing) */
+.block:nth-child(1) { top: 10%; left: 32%; animation-delay: 0s;   --tilt: -20deg; }
+.block:nth-child(2) { top: calc(26% + 0.5cm); left: 10%; animation-delay: .5s;  --tilt: 20deg; }
+.block:nth-child(3) { top: calc(28% + 0.5cm); left: 50%; animation-delay: 1s;   --tilt: 0deg; }
+.block:nth-child(4) { top: calc(48% + 1cm);  left: 2%;  animation-delay: .2s;  --tilt: 0deg; }
+.block:nth-child(5) { top: calc(50% + 1cm);  left: 30%; animation-delay: .8s;  --tilt: -20deg; }
+.block:nth-child(6) { top: calc(48% + 1cm);  left: 58%; animation-delay: 1.3s; --tilt: 0deg; }
+
+@keyframes shake {
+  0%, 100% { transform: rotate(calc(var(--tilt) - 2deg)) translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0); }
+  25%      { transform: rotate(calc(var(--tilt) + 3deg)) translate3d(calc(var(--mag-x, 0px) + 2px), calc(var(--mag-y, 0px) - 1px), 0); }
+  50%      { transform: rotate(calc(var(--tilt) - 3deg)) translate3d(calc(var(--mag-x, 0px) - 2px), calc(var(--mag-y, 0px) + 2px), 0); }
+  75%      { transform: rotate(calc(var(--tilt) + 2deg)) translate3d(calc(var(--mag-x, 0px) + 1px), calc(var(--mag-y, 0px) - 1px), 0); }
+}
+
+/* About landing cluster — same pile, all grey */
+.panel-about {
+  overflow: visible;
+  border-top: none;
+  align-items: flex-start;
+  padding-top: 8vh;
+}
+
+.about-blocks {
+  position: absolute;
+  right: calc(7vw - 1.5cm);
+  bottom: 8vh;
+  top: auto;
+  width: min(28vw, 350px);
+  height: min(28vw, 350px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  --block-size: 26%;
+}
+
+.about-blocks.is-visible {
+  opacity: 1;
+}
+
+.about-blocks .block {
+  opacity: 0;
+  background: var(--gray);
+  animation: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.about-blocks.is-visible .block {
+  animation: none;
+  opacity: 1;
+  transform: rotate(var(--tilt)) translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0);
+}
+
+.about-blocks .block:nth-child(1) { top: 10%; left: 32%; --tilt: -20deg; }
+.about-blocks .block:nth-child(2) { top: calc(26% + 0.5cm); left: 10%; --tilt: 20deg; }
+.about-blocks .block:nth-child(3) { top: calc(28% + 0.5cm); left: 50%; --tilt: 0deg; }
+.about-blocks .block:nth-child(4) { top: calc(48% + 1cm);  left: 2%;  --tilt: 0deg; }
+.about-blocks .block:nth-child(5) { top: calc(50% + 1cm);  left: 30%; --tilt: -20deg; }
+.about-blocks .block:nth-child(6) { top: calc(48% + 1cm);  left: 58%; --tilt: 0deg; }
+
+.panel-about .panel-inner {
+  position: relative;
+  z-index: 1;
+  transform: none;
+  width: 100%;
+}
+
+.panel-about .panel-index {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  margin-bottom: 0.85rem;
+  display: block;
+  color: var(--purple);
+  position: relative;
+  z-index: 2;
+}
+
+/* ============ Scroll cue ============ */
+.scroll-cue {
+  position: absolute;
+  left: 6vw;
+  bottom: 6vh;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--gray);
+  font-size: 0.85rem;
+  transition: opacity 0.25s ease;
+  z-index: 3;
+}
+
+.scroll-cue-line {
+  width: 1px;
+  height: 34px;
+  background: var(--gray);
+  animation: cue-grow 2s ease-in-out infinite;
+  transform-origin: top;
+}
+
+@keyframes cue-grow {
+  0%, 100% { transform: scaleY(0.4); opacity: 0.4; }
+  50%      { transform: scaleY(1);   opacity: 1;   }
+}
+
+/* ============ Content panels ============ */
+.panel {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  padding: 10vh 6vw;
+  border-top: none;
+}
+
+.panel-inner { max-width: 620px; }
+
+.panel-index {
+  display: inline-block;
+  color: var(--purple);
+  font-weight: 400;
+  font-size: 0.9rem;
+  margin-bottom: 5rem;
+}
+
+.panel h2 {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0 0 1.2rem;
+}
+
+.panel p {
+  color: var(--gray-dark);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 60ch;
+}
+
+.panel-about .panel-inner {
+  max-width: 820px;
+}
+
+.panel-about .work-feature-link {
+  display: block;
+  width: 90%;
+  max-width: min(90%, 738px);
+  margin: 2rem 0 1.4rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.panel-about .work-feature-frame {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 1.4rem;
+  background: #d9d9d9;
+}
+
+.panel-about .work-feature-clip {
+  border-radius: 0.9rem;
+  overflow: hidden;
+  aspect-ratio: 1024 / 682;
+}
+
+.panel-about .work-feature-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transition: transform 0.5s ease;
+  transform-origin: center center;
+}
+
+.panel-about .work-feature-image--raised {
+  object-position: center calc(50% - 3cm);
+}
+
+.panel-about .work-feature-link:hover .work-feature-image {
+  transform: scale(1.08);
+}
+
+/* ============ Project pages ============ */
+.project-page {
+  min-height: 100vh;
+}
+
+.project {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 8vh 6vw 12vh;
+}
+
+.project-back {
+  display: inline-block;
+  margin-bottom: 2.5rem;
+  color: var(--purple);
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.project-back:hover {
+  border-color: var(--purple);
+}
+
+.project-index {
+  display: block;
+  color: var(--purple);
+  font-weight: 500;
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  margin-bottom: 0.85rem;
+}
+
+.project-title {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0 0 2rem;
+}
+
+.project-hero-frame {
+  width: 90%;
+  max-width: min(90%, 738px);
+  margin: 0 auto 2rem;
+  padding: 0.8rem;
+  border-radius: 1.4rem;
+  background: #d9d9d9;
+}
+
+.project-hero-clip {
+  border-radius: 0.9rem;
+  overflow: hidden;
+  aspect-ratio: 1024 / 682;
+}
+
+.project-hero-clip img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.project-hero-clip img.is-raised {
+  object-position: center calc(50% - 3cm);
+}
+
+.project-body p {
+  color: var(--gray-dark);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 60ch;
+  margin: 0 0 1.2rem;
+}
+
+.panel-about h2,
+.panel-about p {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.panel-about h2 {
+  font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+  line-height: 1.35;
+}
+
+.panel-about p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.work-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.work-item h3 {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 400;
+  color: var(--purple);
+  font-size: 1.3rem;
+  margin: 0 0 0.4rem;
+}
+
+.work-item p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.contact-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: var(--purple);
+  font-size: 1.4rem;
+  font-weight: 400;
+  text-decoration: none;
+  border-bottom: 2px solid var(--purple);
+}
+
+.contact-link:hover { color: var(--purple-deep); border-color: var(--purple-deep); }
+
+@media (max-width: 640px) {
+  .hero-tagline { text-align: left; margin-left: 0; }
+  .block-field,
+  .about-blocks { width: 50vw; height: 50vw; right: calc(6vw - 1.5cm); }
+  .block-field { bottom: -4vh; }
+}

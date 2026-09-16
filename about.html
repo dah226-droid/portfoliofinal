@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Dayna Ha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barrio&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="be-vietnam-pro-regular project-page is-about-page">
+
+  <nav class="site-nav" aria-label="Primary">
+    <a class="site-nav-link barrio-regular" href="index.html#about">My Work</a>
+    <a class="site-nav-link barrio-regular" href="about.html" id="navAbout" aria-current="page">About Me</a>
+  </nav>
+
+  <main class="project about-page">
+    <a class="project-back" href="index.html">← Back</a>
+    <span class="project-index">About</span>
+    <h1 class="project-title barrio-regular about-name">Nice to meet you!<br>This is who I am.</h1>
+    <p class="about-tagline">"Good design is one step shorter than you expect."</p>
+
+    <div class="about-layout">
+      <figure class="about-photo">
+        <div class="about-photo-frame">
+          <img
+            class="about-photo-image"
+            src="assets/about-me.png"
+            alt="Dayna Ha on a sunny day in New York City"
+          >
+        </div>
+        <button class="about-resume barrio-regular" type="button" id="resumePreviewOpen" data-resume-src="assets/Dayna_HA_Resume.pdf">Click to view my resume!</button>
+      </figure>
+
+      <div class="project-body about-copy">
+        <p>
+          I'm currently pursuing a master's at Pratt Institute, focusing on Information
+          Experience Design (IXD). During my undergraduate at Lehigh University, I did a
+          Bachelor of Arts in Design (Graphic and Product Design) with a minor in
+          marketing. Originally from Ulsan, South Korea, I bring multicultural
+          perspectives to my work and strive to create thoughtful, people-centered design.
+        </p>
+        <p>
+          My design journey began when I was introduced to the concept of inclusive design.
+          Since then, I've been passionate about creating solutions that are not only
+          visually compelling but also accessible and meaningful for diverse audiences.
+          I enjoy the process of designing for people — understanding their needs,
+          behaviors, and experiences — and translating that into designs that balance
+          creativity, functionality, and impact.
+        </p>
+        <p>
+          Outside of design, I love animals, cooking and experimenting with new recipes, 
+          traveling around the world, taking pictures, and discovering new music. These 
+          interests often fuel my creativity and shape how I approach design projects.
+        </p>
+        <p>
+          <strong>Skills:</strong> Adobe Illustrator, Adobe InDesign, Adobe Photoshop,
+          Adobe Firefly, Adobe Dimension, HTML, Fusion 360, Rhino 3D, Canva, Figma, and
+          Procreate
+        </p>
+        <p>
+          Certified in Wood-working, Metal-working, 3D printing, and Laser cutting
+        </p>
+        <p>
+          <strong>Language:</strong> Fluent in Korean and English, and Intermediate in Chinese
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <div class="resume-preview" id="resumePreview" aria-hidden="true">
+    <div class="resume-preview-backdrop" data-resume-close></div>
+    <div class="resume-preview-dialog" role="dialog" aria-modal="true" aria-labelledby="resumePreviewTitle">
+      <div class="resume-preview-bar">
+        <h2 class="resume-preview-title barrio-regular" id="resumePreviewTitle">Resume preview</h2>
+        <div class="resume-preview-actions">
+          <a class="resume-preview-open be-vietnam-pro-regular" href="assets/Dayna_HA_Resume.pdf" target="_blank" rel="noopener">Open PDF</a>
+          <button class="resume-preview-close be-vietnam-pro-regular" type="button" data-resume-close aria-label="Close preview">Close</button>
+        </div>
+      </div>
+      <iframe
+        class="resume-preview-frame"
+        id="resumePreviewFrame"
+        title="Dayna Ha resume preview"
+      ></iframe>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
