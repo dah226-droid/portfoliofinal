@@ -1164,14 +1164,19 @@
 
     let extra = 0;
     let ticking = false;
+    const nav = document.querySelector('.site-nav');
 
     function overflow() {
       return Math.max(0, track.scrollWidth - carousel.clientWidth);
     }
 
-    function measure() {
+    function layout() {
+      const navH = nav ? Math.round(nav.getBoundingClientRect().height) : 0;
+      const viewH = Math.max(0, window.innerHeight - navH);
+      carousel.style.top = `${navH}px`;
+      carousel.style.height = `${viewH}px`;
       extra = overflow();
-      pin.style.height = `${carousel.offsetHeight + extra}px`;
+      pin.style.height = `${viewH + extra}px`;
     }
 
     function apply() {
@@ -1195,7 +1200,7 @@
     }
 
     function onResize() {
-      measure();
+      layout();
       apply();
     }
 
@@ -1205,7 +1210,7 @@
       img.addEventListener('error', onResize, { once: true });
     });
 
-    measure();
+    layout();
     apply();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
@@ -1324,6 +1329,7 @@
       if (target.closest('.site-nav-link')) return 1.45;
       if (target.closest('.about-resume')) return 1.12;
       if (target.closest('.photo-slide, .photo-slide-open, .photo-panel-close, .photo-panel-nav')) return 1.12;
+      if (target.closest('.ig-action, .ig-dialog-choice')) return 1.12;
       if (target.closest('.hobby-link')) return 1.45;
       if (target.closest('.work-feature-link, .work-feature-name, .work-feature-clip, .project-hero-clip')) {
         return 1.12;
@@ -1485,7 +1491,149 @@
   initPhotoLightbox();
   initCustomCursor();
   initResumePreview();
+  initIgProfile();
+  initIgPost();
 })();
+
+function initIgProfile() {
+  const followBtn = document.getElementById('igFollow');
+  const messageBtn = document.getElementById('igMessage');
+  const thanksDialog = document.getElementById('igThanksDialog');
+  const mailDialog = document.getElementById('igMailDialog');
+  const mailYes = document.getElementById('igMailYes');
+  if (!followBtn && !messageBtn) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const mailTo = 'mailto:hada031114@gmail.com';
+  let thanksTimer = 0;
+
+  function openDialog(dialog) {
+    if (!dialog) return;
+    dialog.classList.add('is-open');
+    dialog.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeDialog(dialog) {
+    if (!dialog) return;
+    dialog.classList.remove('is-open');
+    dialog.setAttribute('aria-hidden', 'true');
+  }
+
+  function burstConfetti(origin) {
+    if (prefersReducedMotion) return;
+    const rect = origin.getBoundingClientRect();
+    const startX = rect.left + rect.width / 2;
+    const startY = rect.top + rect.height / 2;
+    const canvas = document.createElement('canvas');
+    canvas.className = 'ig-confetti';
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      canvas.remove();
+      return;
+    }
+
+    function sizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    sizeCanvas();
+
+    const colors = ['#8c4a97', '#6f3a7c', '#c989d1', '#e7c7ee', '#fffcf2', '#d4a0c8'];
+    const pieces = Array.from({ length: 110 }, () => {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 4 + Math.random() * 9;
+      return {
+        x: startX,
+        y: startY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 4,
+        w: 6 + Math.random() * 7,
+        h: 8 + Math.random() * 10,
+        rot: Math.random() * Math.PI,
+        vr: (Math.random() - 0.5) * 0.35,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        life: 1,
+      };
+    });
+
+    const started = performance.now();
+    function tick(now) {
+      const elapsed = now - started;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach((p) => {
+        p.vy += 0.18;
+        p.vx *= 0.992;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        p.life = Math.max(0, 1 - elapsed / 1800);
+        ctx.save();
+        ctx.globalAlpha = p.life;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      });
+      if (elapsed < 1800) {
+        requestAnimationFrame(tick);
+      } else {
+        canvas.remove();
+      }
+    }
+    requestAnimationFrame(tick);
+    window.addEventListener('resize', sizeCanvas, { once: true });
+  }
+
+  if (followBtn && thanksDialog) {
+    let hasCelebrated = false;
+    followBtn.addEventListener('click', () => {
+      const isFollowing = followBtn.classList.contains('is-following');
+      if (isFollowing) {
+        followBtn.classList.remove('is-following');
+        followBtn.textContent = 'Follow';
+        return;
+      }
+
+      followBtn.classList.add('is-following');
+      followBtn.textContent = 'Following';
+      if (hasCelebrated) return;
+      hasCelebrated = true;
+      burstConfetti(followBtn);
+      openDialog(thanksDialog);
+      window.clearTimeout(thanksTimer);
+      thanksTimer = window.setTimeout(() => closeDialog(thanksDialog), 1000);
+    });
+    thanksDialog.addEventListener('click', (e) => {
+      if (e.target.closest('[data-ig-thanks-close]') || e.target.closest('.ig-dialog-card')) {
+        closeDialog(thanksDialog);
+      }
+    });
+  }
+
+  if (messageBtn && mailDialog) {
+    messageBtn.addEventListener('click', () => {
+      openDialog(mailDialog);
+      if (mailYes) mailYes.focus();
+    });
+    mailDialog.addEventListener('click', (e) => {
+      if (e.target.closest('[data-ig-mail-close]')) closeDialog(mailDialog);
+    });
+    if (mailYes) {
+      mailYes.addEventListener('click', () => {
+        closeDialog(mailDialog);
+        window.location.href = mailTo;
+      });
+    }
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    closeDialog(thanksDialog);
+    closeDialog(mailDialog);
+  });
+}
 
 function initResumePreview() {
   const openBtn = document.getElementById('resumePreviewOpen');
@@ -1520,5 +1668,130 @@ function initResumePreview() {
   });
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal.classList.contains('is-open')) closePreview();
+  });
+}
+
+function initIgPost() {
+  const triggers = Array.from(document.querySelectorAll('[data-ig-post]'));
+  const panel = document.getElementById('igPostPanel');
+  const panelImg = document.getElementById('igPostImage');
+  const panelVideo = document.getElementById('igPostVideo');
+  const prevBtn = document.getElementById('igPostPrev');
+  const nextBtn = document.getElementById('igPostNext');
+  if (!triggers.length || !panel || !panelImg) return;
+
+  let slides = [];
+  let index = 0;
+  let activeTrigger = null;
+  let videoOnly = false;
+
+  function stopVideo() {
+    if (!panelVideo) return;
+    panelVideo.pause();
+    panelVideo.removeAttribute('src');
+    panelVideo.load();
+    panelVideo.hidden = true;
+  }
+
+  function showAt(i) {
+    if (!slides.length) return;
+    index = (i + slides.length) % slides.length;
+    const slide = slides[index];
+    const isVid = slide.tagName === 'VIDEO';
+
+    panel.classList.toggle('is-showing-video', isVid);
+
+    if (isVid && panelVideo) {
+      panelImg.removeAttribute('src');
+      panelImg.alt = '';
+      panelImg.hidden = true;
+      panelVideo.hidden = false;
+      const nextSrc = slide.getAttribute('src') || slide.currentSrc || slide.src;
+      panelVideo.src = nextSrc;
+      panelVideo.currentTime = 0;
+      const playPromise = panelVideo.play();
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {});
+      }
+    } else {
+      stopVideo();
+      panelImg.hidden = false;
+      panelImg.src = slide.currentSrc || slide.src;
+      panelImg.alt = slide.alt || '';
+    }
+  }
+
+  function openFrom(trigger) {
+    const id = trigger.getAttribute('data-ig-post');
+    const slidesRoot = document.getElementById(`igPostSlides-${id}`);
+    if (!slidesRoot) return;
+
+    slides = Array.from(slidesRoot.querySelectorAll('img, video'));
+    if (!slides.length) return;
+
+    videoOnly = slides.length === 1 && slides[0].tagName === 'VIDEO';
+    activeTrigger = trigger;
+    panel.classList.toggle('is-video-only', videoOnly);
+    panel.classList.remove('is-showing-video');
+
+    showAt(0);
+    panel.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (!videoOnly && nextBtn) nextBtn.focus();
+    else if (panelVideo) panelVideo.focus();
+  }
+
+  function close() {
+    if (!panel.classList.contains('is-open')) return;
+    panel.classList.remove('is-open');
+    panel.classList.remove('is-video-only');
+    panel.classList.remove('is-showing-video');
+    panel.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    stopVideo();
+    if (activeTrigger) activeTrigger.focus();
+  }
+
+  function step(delta) {
+    if (!panel.classList.contains('is-open') || videoOnly) return;
+    showAt(index + delta);
+  }
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      openFrom(trigger);
+    });
+  });
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      step(-1);
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      step(1);
+    });
+  }
+
+  panel.addEventListener('click', (e) => {
+    if (e.target.closest('[data-ig-post-close]')) close();
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (!panel.classList.contains('is-open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      step(-1);
+    }
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      step(1);
+    }
   });
 }

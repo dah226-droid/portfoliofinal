@@ -548,6 +548,11 @@ body.custom-cursor-active .site-nav-link {
   color: var(--gray-dark);
 }
 
+.hobby-detail .to-top {
+  margin-bottom: -2cm;
+  padding-bottom: 0;
+}
+
 /* mid-drop / bounce / exit: JS owns transform */
 .block-field.is-dropping .block,
 .block-field.is-bouncing .block,
@@ -1463,22 +1468,394 @@ body.custom-cursor-active .site-nav-link {
   text-align: center;
 }
 
-.photography-page {
+.hobby-detail {
   padding-top: 0.35rem;
-  padding-bottom: 0;
 }
 
-.photography-page .project-back {
+.hobby-detail .project-back {
+  margin-bottom: 0;
+}
+
+.hobby-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   margin-bottom: calc(0.55rem + 0.3cm);
 }
 
-.photography-page .hobby-page-title {
+.hobby-next {
+  display: inline-block;
+  color: var(--purple);
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.hobby-next:hover {
+  border-color: var(--purple);
+}
+
+.hobby-detail .hobby-page-title {
   font-size: clamp(2.1rem, 6vw, 3.6rem);
   margin-bottom: 0.45rem;
 }
 
-.photography-page .hobby-page-lead {
+.hobby-detail .hobby-page-lead {
   margin-bottom: 0;
+}
+
+.ig-profile {
+  margin-top: 2.4rem;
+  max-width: 58rem;
+}
+
+.ig-profile-top {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.4rem, 5vw, 4.25rem);
+}
+
+.ig-avatar-wrap {
+  flex: 0 0 auto;
+  width: clamp(6.4rem, 18vw, 9.4rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: 0.28rem;
+  border: 0.22rem solid var(--purple);
+  box-sizing: border-box;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.ig-avatar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 46%;
+  border-radius: 50%;
+}
+
+.ig-profile-meta {
+  min-width: 0;
+}
+
+.ig-username {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.85rem;
+  font-weight: 500;
+  font-size: clamp(1.15rem, 2.5vw, 1.55rem);
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.ig-verified {
+  display: block;
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+}
+
+.ig-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.6rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.ig-stats strong {
+  font-weight: 500;
+  color: var(--purple);
+  margin-right: 0.28rem;
+}
+
+.ig-name {
+  margin: 1.2rem 0 0.2rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.ig-bio {
+  margin: 0;
+  max-width: 38ch;
+  color: var(--ink);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.65;
+}
+
+.ig-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1.15rem;
+  max-width: 22rem;
+}
+
+.ig-action {
+  flex: 1 1 8.5rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 0.62rem 1rem;
+  border-radius: 0.55rem;
+  border: 0.16rem solid var(--purple);
+  background: var(--paper);
+  color: var(--purple);
+}
+
+.ig-follow {
+  background: var(--purple);
+  color: var(--paper);
+}
+
+.ig-follow.is-following {
+  background: var(--paper);
+  color: var(--purple);
+}
+
+.ig-action:hover {
+  border-color: var(--purple-deep);
+}
+
+.ig-follow:hover {
+  background: var(--purple-deep);
+  color: var(--paper);
+}
+
+.ig-follow.is-following:hover {
+  background: var(--paper);
+  color: var(--purple-deep);
+}
+
+.ig-message:hover {
+  color: var(--purple-deep);
+}
+
+.ig-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 230;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s ease, visibility 0.22s ease;
+}
+
+.ig-dialog.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.ig-dialog-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(140, 74, 151, 0.18);
+}
+
+.ig-dialog-card {
+  position: relative;
+  z-index: 1;
+  width: min(22rem, 100%);
+  padding: 1.6rem 1.4rem 1.35rem;
+  background: var(--paper);
+  border: 0.22rem solid var(--purple);
+  border-radius: 0.9rem;
+  text-align: center;
+}
+
+.ig-dialog-title {
+  margin: 0;
+  font-size: clamp(1.35rem, 3.4vw, 1.85rem);
+  line-height: 1.15;
+  color: var(--purple);
+}
+
+.ig-dialog-choices {
+  display: flex;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-top: 1.15rem;
+}
+
+.ig-dialog-choice {
+  min-width: 5.4rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.52rem 1.1rem;
+  border-radius: 0.5rem;
+  border: 0.16rem solid var(--purple);
+  background: var(--paper);
+  color: var(--purple);
+}
+
+.ig-dialog-choice.is-yes {
+  background: var(--purple);
+  color: var(--paper);
+}
+
+.ig-dialog-choice:hover {
+  border-color: var(--purple-deep);
+}
+
+.ig-dialog-choice.is-yes:hover {
+  background: var(--purple-deep);
+}
+
+.ig-dialog-choice.is-no:hover {
+  color: var(--purple-deep);
+}
+
+.ig-confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: 0.28rem;
+  margin-top: 2.1rem;
+  margin-bottom: 4rem;
+  max-width: none;
+  width: 100%;
+}
+
+.ig-cell {
+  aspect-ratio: 1;
+  background: rgba(140, 74, 151, 0.06);
+  border: 1px solid rgba(140, 74, 151, 0.18);
+  box-sizing: border-box;
+}
+
+.ig-cell-post {
+  aspect-ratio: auto;
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.ig-cell-post::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 16, 30, 0);
+  transition: background 0.2s ease;
+  pointer-events: none;
+}
+
+.ig-cell-post:hover::after {
+  background: rgba(26, 16, 30, 0.38);
+}
+
+.ig-cell-post img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ig-cell-multi {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  z-index: 1;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: var(--paper);
+  filter: drop-shadow(0 1px 2px rgba(40, 30, 45, 0.45));
+  pointer-events: none;
+}
+
+.ig-cell-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 2.4rem;
+  height: 2.4rem;
+  transform: translate(-50%, -50%);
+  color: #1a101e;
+  filter: drop-shadow(0 2px 6px rgba(40, 30, 45, 0.35));
+  pointer-events: none;
+}
+
+.ig-cell-hover-label {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0.6rem;
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.95rem;
+  line-height: 1.1;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.ig-cell-post-label:hover .ig-cell-hover-label {
+  opacity: 1;
+}
+
+.photo-panel-count {
+  margin: 0 0 0 auto;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--purple);
+  white-space: nowrap;
+}
+
+.ig-cell-soon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem;
+  background: var(--paper);
+  border: 0.18rem solid var(--purple);
+}
+
+.ig-cell-label {
+  font-size: clamp(0.95rem, 2.4vw, 1.35rem);
+  color: var(--purple);
+  text-align: center;
+  line-height: 1;
+}
+
+.photography-page {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .photo-pin {
@@ -1491,8 +1868,8 @@ body.custom-cursor-active .site-nav-link {
 .photo-carousel {
   position: sticky;
   top: 4.3rem;
-  height: auto;
-  max-height: calc(100svh - 5.2rem);
+  height: calc(100svh - 4.3rem);
+  max-height: none;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -1500,7 +1877,7 @@ body.custom-cursor-active .site-nav-link {
   overflow-x: auto;
   overflow-y: hidden;
   box-sizing: border-box;
-  padding: 0 0 1rem;
+  padding: 0 0 calc(1rem + 0.7cm);
   touch-action: pan-y;
   -webkit-overflow-scrolling: touch;
 }
@@ -1516,7 +1893,9 @@ body.custom-cursor-active .site-nav-link {
 
 .photo-track {
   display: flex;
-  align-items: center;
+  align-items: stretch;
+  flex: 1 1 auto;
+  min-height: 0;
   gap: 1.15rem;
   padding: 0 6vw;
   will-change: transform;
@@ -1525,10 +1904,15 @@ body.custom-cursor-active .site-nav-link {
 .photo-slide {
   margin: 0;
   flex: 0 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .photo-slide-open {
-  display: block;
+  display: flex;
+  align-items: center;
+  height: 100%;
   margin: 0;
   padding: 0;
   border: 0;
@@ -1538,7 +1922,7 @@ body.custom-cursor-active .site-nav-link {
 
 .photo-slide img {
   display: block;
-  height: min(58vh, calc(100svh - 14rem));
+  height: 100%;
   width: auto;
   object-fit: contain;
   border-radius: 0.85em 0.28em 1.1em 0.4em / 0.7em 0.9em 0.35em 0.95em;
@@ -1674,6 +2058,63 @@ body.custom-cursor-active .site-nav-link {
   color: var(--purple-deep);
 }
 
+.ig-post-panel {
+  padding: 1.25rem;
+}
+
+.ig-post-panel .photo-panel-backdrop {
+  background: rgba(26, 16, 30, 0.68);
+}
+
+.ig-post-stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  max-width: 100%;
+}
+
+.ig-post-panel .photo-panel-nav {
+  position: static;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  transform: none;
+  flex-shrink: 0;
+}
+
+.ig-post-panel #igPostImage {
+  display: block;
+  max-width: calc((100vw - 8.5rem) * 0.8);
+  max-height: min(73.6vh, 784px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.ig-post-panel #igPostVideo {
+  display: none;
+  max-width: calc((100vw - 8.5rem) * 0.8);
+  max-height: min(73.6vh, 784px);
+  width: auto;
+  height: auto;
+  background: #1a101e;
+}
+
+.ig-post-panel.is-video-only .photo-panel-nav {
+  display: none;
+}
+
+.ig-post-panel.is-showing-video #igPostImage {
+  display: none !important;
+}
+
+.ig-post-panel.is-showing-video #igPostVideo {
+  display: block !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .photo-pin {
     height: auto !important;
@@ -1691,6 +2132,8 @@ body.custom-cursor-active .site-nav-link {
 
   .photo-track {
     transform: none !important;
+    flex: 0 0 auto;
+    height: min(58vh, calc(100svh - 14rem));
   }
 
   .photo-slide {
@@ -1705,13 +2148,13 @@ body.custom-cursor-active .site-nav-link {
 .panel-contact {
   align-items: flex-start;
   min-height: auto;
-  padding-top: calc(var(--section-gap, 3.5rem) * 4);
-  padding-bottom: calc(var(--section-gap, 3.5rem) * 7);
+  padding-top: calc(var(--section-gap, 3.5rem) * 4 - 1.7cm);
+  padding-bottom: calc(var(--section-gap, 3.5rem) * 5 + 0.8cm);
 }
 
 .contact-link {
   display: inline-block;
-  margin-top: 0.5rem;
+  margin-top: calc(0.5rem - 0.3cm);
   color: var(--purple);
   font-size: 1.4rem;
   font-weight: 400;
@@ -1720,6 +2163,76 @@ body.custom-cursor-active .site-nav-link {
 }
 
 .contact-link:hover { color: var(--purple-deep); border-color: var(--purple-deep); }
+
+.contact-socials {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 4rem;
+}
+
+.contact-socials .contact-social:last-child {
+  margin-left: 0.1cm;
+}
+
+.contact-social {
+  position: relative;
+  display: block;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.contact-social img {
+  display: block;
+  width: calc(2.85rem * 0.6);
+  height: auto;
+  transition: transform 0.22s ease;
+  transform-origin: center center;
+}
+
+.contact-social::after {
+  content: attr(data-label);
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 0.45rem);
+  bottom: auto;
+  transform: translateX(-50%) translateY(-0.2rem);
+  padding: 0.28rem 0.55rem;
+  border: 2px solid var(--purple);
+  border-radius: 0.35rem;
+  background: #fff;
+  color: var(--purple);
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  z-index: 5;
+}
+
+.contact-social:hover img,
+.contact-social:focus-visible img {
+  transform: scale(1.18);
+}
+
+.contact-social:hover::after,
+.contact-social:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-social img,
+  .contact-social::after {
+    transition: none;
+  }
+}
 
 /* ============ Responsive ============ */
 @media (max-width: 960px) {
@@ -1867,6 +2380,22 @@ body.custom-cursor-active .site-nav-link {
   .photo-panel-nav.is-next {
     right: 1rem;
   }
+
+  .ig-post-panel {
+    padding: 0.75rem;
+    align-items: center;
+  }
+
+  .ig-post-panel .photo-panel-nav {
+    position: static;
+    transform: none;
+  }
+
+  .ig-post-panel #igPostImage,
+  .ig-post-panel #igPostVideo {
+    max-height: 68.8vh;
+    max-width: calc((100vw - 6.5rem) * 0.8);
+  }
 }
 
 @media (max-width: 640px) {
@@ -1887,6 +2416,20 @@ body.custom-cursor-active .site-nav-link {
 
   .hobby-phone {
     height: min(42vw, 13rem);
+  }
+
+  .ig-profile-top {
+    gap: 1.1rem;
+  }
+
+  .ig-stats {
+    gap: 0.2rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .ig-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.18rem;
   }
 
   .site-nav-link {

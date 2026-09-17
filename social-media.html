@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barrio&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=hobbypages1">
+<link rel="stylesheet" href="style.css?v=hobbynav1">
 </head>
-<body class="be-vietnam-pro-regular project-page">
+<body class="be-vietnam-pro-regular project-page" id="pageTop">
 
   <nav class="site-nav" aria-label="Primary">
     <a class="site-nav-link barrio-regular" href="index.html#about">My Work</a>
@@ -19,18 +19,314 @@
     <a class="site-nav-link barrio-regular" href="about.html" id="navAbout">About Me</a>
   </nav>
 
-  <main class="project hobby-page">
-    <a class="project-back" href="index.html#hobbies">← Back to Others</a>
-    <span class="project-index">Others</span>
+  <main class="project hobby-page hobby-detail">
+    <div class="hobby-nav">
+      <a class="project-back" href="index.html#hobbies">← Back</a>
+      <a class="hobby-next" href="photography.html">Photography →</a>
+    </div>
     <h1 class="hobby-page-title barrio-regular">Social Media</h1>
-    <p class="hobby-page-lead">A home for what I share online — still gathering.</p>
-    <div class="hobby-gallery" aria-label="Social media">
-      <div class="hobby-gallery-empty">
-        <span class="hobby-gallery-empty-label barrio-regular">Coming Soon</span>
+    <p class="hobby-page-lead">Welcome to my online space!</p>
+
+    <section class="ig-profile" aria-label="Instagram-style profile">
+      <div class="ig-profile-top">
+        <div class="ig-avatar-wrap">
+          <img
+            class="ig-avatar"
+            src="assets/social-profile.jpg?v=pic3"
+            alt="Dayna Ha"
+            width="800"
+            height="800"
+          >
+        </div>
+        <div class="ig-profile-meta">
+          <p class="ig-username">
+            <span>daynaha</span>
+            <img class="ig-verified" src="assets/ig-verified.png" alt="" width="48" height="48">
+          </p>
+          <ul class="ig-stats">
+            <li><strong>12</strong> posts</li>
+            <li><strong>—</strong> followers</li>
+            <li><strong>—</strong> following</li>
+          </ul>
+        </div>
+      </div>
+      <p class="ig-name">Dayna Ha</p>
+      <p class="ig-bio">Click to view my posts!</p>
+      <div class="ig-actions">
+        <button class="ig-action ig-follow" type="button" id="igFollow">Follow</button>
+        <button class="ig-action ig-message" type="button" id="igMessage">Message</button>
+      </div>
+    </section>
+
+    <div class="ig-dialog" id="igThanksDialog" aria-hidden="true">
+      <div class="ig-dialog-backdrop" data-ig-thanks-close></div>
+      <div class="ig-dialog-card" role="status" aria-live="polite">
+        <p class="ig-dialog-title barrio-regular">thanks for following me!</p>
       </div>
     </div>
+
+    <div class="ig-dialog" id="igMailDialog" aria-hidden="true">
+      <div class="ig-dialog-backdrop" data-ig-mail-close></div>
+      <div class="ig-dialog-card" role="dialog" aria-modal="true" aria-labelledby="igMailTitle">
+        <p class="ig-dialog-title barrio-regular" id="igMailTitle">Want to send me an email?</p>
+        <div class="ig-dialog-choices">
+          <button class="ig-dialog-choice is-yes" type="button" id="igMailYes">Yes</button>
+          <button class="ig-dialog-choice is-no" type="button" id="igMailNo" data-ig-mail-close>No</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ig-grid" aria-label="Posts">
+      <button class="ig-cell ig-cell-post" type="button" data-ig-post="1" aria-haspopup="dialog" aria-label="View Bessou Snack Shop post">
+        <img
+          src="assets/social/01.jpg"
+          alt="The Only Hot Chocolate You’ll Need This Season"
+          width="819"
+          height="1024"
+        >
+        <svg class="ig-cell-multi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="7" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="7" width="14" height="14" rx="2" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+      <button class="ig-cell ig-cell-post" type="button" data-ig-post="2" aria-haspopup="dialog" aria-label="View Main Streaming Under Ground post">
+        <img
+          src="assets/social/post2/01.png"
+          alt="Main Streaming, Under Ground"
+          width="819"
+          height="1024"
+        >
+        <svg class="ig-cell-multi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="7" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="7" width="14" height="14" rx="2" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+      <button class="ig-cell ig-cell-post" type="button" data-ig-post="3" aria-haspopup="dialog" aria-label="View Maple Pear Margarita post">
+        <img
+          src="assets/social/post3/01.jpg"
+          alt="Maple Pear Margarita"
+          width="819"
+          height="1024"
+        >
+        <svg class="ig-cell-multi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="7" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="7" width="14" height="14" rx="2" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+      <button class="ig-cell ig-cell-post" type="button" data-ig-post="4" aria-haspopup="dialog" aria-label="View Punch That Ramen post">
+        <img
+          src="assets/social/post4/01.jpg"
+          alt="Punch That Ramen"
+          width="819"
+          height="1024"
+        >
+        <svg class="ig-cell-multi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="7" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="7" width="14" height="14" rx="2" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+      <button class="ig-cell ig-cell-post" type="button" data-ig-post="5" aria-haspopup="dialog" aria-label="View Sweet Potatoes NABI post">
+        <img
+          src="assets/social/post5/01.jpg"
+          alt="Sweet Potatoes Are The Main Characters of Fall"
+          width="819"
+          height="1024"
+        >
+        <svg class="ig-cell-multi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="7" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="7" width="14" height="14" rx="2" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+      <button class="ig-cell ig-cell-post" type="button" data-ig-post="6" aria-haspopup="dialog" aria-label="View Apple Spritz Cider post">
+        <img
+          src="assets/social/post6/01.jpg"
+          alt="Apple Spritz Cider"
+          width="819"
+          height="1024"
+        >
+        <svg class="ig-cell-multi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="7" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="7" width="14" height="14" rx="2" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+      <button class="ig-cell ig-cell-post" type="button" data-ig-post="7" aria-haspopup="dialog" aria-label="View KORA Filipino Tradition post">
+        <img
+          src="assets/social/post7/01.jpg"
+          alt="A Bit of Filipino Tradition in NYC"
+          width="819"
+          height="1024"
+        >
+        <svg class="ig-cell-multi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="7" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="7" width="14" height="14" rx="2" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+      <button class="ig-cell ig-cell-post" type="button" data-ig-post="8" aria-haspopup="dialog" aria-label="View Fig-tini post">
+        <img
+          src="assets/social/post8/01.jpg"
+          alt="Fig-tini"
+          width="819"
+          height="1024"
+        >
+        <svg class="ig-cell-multi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="7" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="7" width="14" height="14" rx="2" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+      <button class="ig-cell ig-cell-post" type="button" data-ig-post="9" aria-haspopup="dialog" aria-label="View Pumpkin Old Fashioned post">
+        <img
+          src="assets/social/post9/01.jpg"
+          alt="Pumpkin Old Fashioned"
+          width="819"
+          height="1024"
+        >
+        <svg class="ig-cell-multi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="7" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="7" width="14" height="14" rx="2" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+      <button class="ig-cell ig-cell-post" type="button" data-ig-post="10" aria-haspopup="dialog" aria-label="View The Luxury of Labubu post">
+        <img
+          src="assets/social/post10/01.png"
+          alt="The Luxury of Labubu"
+          width="819"
+          height="1024"
+        >
+        <svg class="ig-cell-multi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="7" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="7" width="14" height="14" rx="2" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+      <button class="ig-cell ig-cell-post" type="button" data-ig-post="11" data-ig-post-type="video" aria-haspopup="dialog" aria-label="View Asian Cultural Society video">
+        <img
+          src="assets/social/post11/01.jpg"
+          alt="Asian Cultural Society video"
+          width="819"
+          height="1024"
+        >
+        <svg class="ig-cell-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.55"/>
+          <path d="M10 8.5v7l6-3.5-6-3.5z" fill="#fffcf2"/>
+        </svg>
+      </button>
+      <button class="ig-cell ig-cell-post ig-cell-post-label" type="button" data-ig-post="12" aria-haspopup="dialog" aria-label="View event posters post">
+        <img
+          src="assets/social/post12/01.jpg?v=fair1"
+          alt="Fall 25 Club Fair event poster"
+          width="819"
+          height="1024"
+        >
+        <svg class="ig-cell-multi" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <rect x="7" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <rect x="3" y="7" width="14" height="14" rx="2" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span class="ig-cell-hover-label">event posters</span>
+      </button>
+    </div>
+
+    <a class="to-top be-vietnam-pro-regular" href="#pageTop" id="toTop">Go to the Top</a>
   </main>
 
-  <script src="script.js?v=hobbypages1"></script>
+  <div hidden id="igPostSlides-1">
+    <img src="assets/social/01.jpg" alt="The Only Hot Chocolate You’ll Need This Season">
+    <img src="assets/social/02.jpg" alt="Halloween in New York and holiday food from Bessou">
+    <img src="assets/social/03.jpg" alt="Bessou Snack Shop stall at Bryant Park">
+    <img src="assets/social/04.png" alt="Yaki onigiri held in a blue-and-white wrapper">
+    <img src="assets/social/05.jpg" alt="Close-up of Bessou’s hot chocolate">
+    <img src="assets/social/06.jpg" alt="Kinako-cinnamon powder shaken over hot chocolate">
+    <img src="assets/social/07.jpg" alt="Pom Pom Popcorn and miso caramel snacks from Bessou">
+  </div>
+
+  <div hidden id="igPostSlides-2">
+    <img src="assets/social/post2/01.png" alt="Main Streaming, Under Ground">
+    <img src="assets/social/post2/02.png" alt="Is anything really underground anymore?">
+    <img src="assets/social/post2/03.png" alt="Subcultures, gatekeepers, and niche brands">
+    <img src="assets/social/post2/04.png" alt="Inaccessibility and cultural capital">
+  </div>
+
+  <div hidden id="igPostSlides-3">
+    <img src="assets/social/post3/01.jpg" alt="Maple Pear Margarita">
+    <img src="assets/social/post3/02.jpg" alt="Maple Pear Margarita ingredients">
+    <img src="assets/social/post3/03.jpg" alt="How to make a Maple Pear Margarita">
+  </div>
+
+  <div hidden id="igPostSlides-4">
+    <img src="assets/social/post4/01.jpg" alt="Punch That Ramen">
+    <img src="assets/social/post4/02.jpg" alt="Raw ramen as a snack in Korea">
+    <img src="assets/social/post4/03.jpg" alt="How to make raw ramen">
+    <img src="assets/social/post4/04.png" alt="Ppushu Ppushu flavored raw ramen bags">
+    <img src="assets/social/post4/05.jpg" alt="Crushed raw ramen on a plate">
+  </div>
+
+  <div hidden id="igPostSlides-5">
+    <img src="assets/social/post5/01.jpg" alt="Sweet Potatoes Are The Main Characters of Fall">
+    <img src="assets/social/post5/02.jpg" alt="NABI sweet potato wake-up call">
+    <img src="assets/social/post5/03.jpg" alt="What’s the deal with sweet potatoes">
+    <img src="assets/social/post5/04.jpg" alt="Sweet potatoes as the wellness root vegetable">
+  </div>
+
+  <div hidden id="igPostSlides-6">
+    <img src="assets/social/post6/01.jpg" alt="Apple Spritz Cider">
+    <img src="assets/social/post6/02.png" alt="Apple Spritz Cider ingredients">
+    <img src="assets/social/post6/03.png" alt="How to make an Apple Spritz Cider">
+  </div>
+
+  <div hidden id="igPostSlides-7">
+    <img src="assets/social/post7/01.jpg" alt="A Bit of Filipino Tradition in NYC">
+    <img src="assets/social/post7/02.png" alt="Kora Donuts permanent location in Sunnyside">
+    <img src="assets/social/post7/03.png" alt="Kora as a love letter to Filipino heritage">
+    <img src="assets/social/post7/04.png" alt="Kora’s signature ube donut and media attention">
+    <img src="assets/social/post7/05.png" alt="Kora expanding Filipino cuisine in New York">
+  </div>
+
+  <div hidden id="igPostSlides-8">
+    <img src="assets/social/post8/01.jpg" alt="Fig-tini">
+    <img src="assets/social/post8/02.jpg" alt="Fig-tini ingredients">
+    <img src="assets/social/post8/03.png" alt="How to make a Fig-tini">
+  </div>
+
+  <div hidden id="igPostSlides-9">
+    <img src="assets/social/post9/01.jpg" alt="Pumpkin Old Fashioned">
+    <img src="assets/social/post9/02.png" alt="Pumpkin Old Fashioned ingredients">
+    <img src="assets/social/post9/03.png" alt="How to make a Pumpkin Old Fashioned">
+  </div>
+
+  <div hidden id="igPostSlides-10">
+    <img src="assets/social/post10/01.png" alt="The Luxury of Labubu">
+    <img src="assets/social/post10/02.png" alt="Labubu origins and Pop Mart">
+    <img src="assets/social/post10/03.png" alt="Fake Labubus and resale market">
+    <img src="assets/social/post10/04.jpg" alt="Celebrities with Labubu collectables">
+    <img src="assets/social/post10/05.png" alt="Are Labubus a lasting trend?">
+  </div>
+
+  <div hidden id="igPostSlides-11">
+    <video src="assets/social/post11/video.mp4" preload="metadata" playsinline></video>
+  </div>
+
+  <div hidden id="igPostSlides-12">
+    <img src="assets/social/post12/01.jpg?v=fair1" alt="Fall 25 Club Fair event poster">
+    <img src="assets/social/post12/02.jpg" alt="Talent(less) Night boarding pass poster">
+    <video src="assets/social/post12/video.mp4" preload="metadata" playsinline></video>
+  </div>
+
+  <div class="photo-panel ig-post-panel" id="igPostPanel" aria-hidden="true">
+    <div class="photo-panel-backdrop" data-ig-post-close></div>
+    <div class="ig-post-stage" role="dialog" aria-modal="true" aria-label="Post">
+      <button class="photo-panel-nav is-prev" type="button" id="igPostPrev" aria-label="Previous photo">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <img id="igPostImage" alt="">
+      <video id="igPostVideo" controls playsinline preload="metadata" hidden></video>
+      <button class="photo-panel-nav is-next" type="button" id="igPostNext" aria-label="Next photo">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M9.5 5.5 16 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script src="script.js?v=igpost18"></script>
 </body>
 </html>
