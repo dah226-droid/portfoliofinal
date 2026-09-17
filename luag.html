@@ -9,14 +9,23 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barrio&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=projectnav7">
 </head>
-<body class="be-vietnam-pro-regular project-page">
+<body class="be-vietnam-pro-regular project-page" id="pageTop">
+
+  <nav class="site-nav" aria-label="Primary">
+    <a class="site-nav-link barrio-regular" href="index.html#about" aria-current="page">My Work</a>
+    <a class="site-nav-link barrio-regular" href="index.html#hobbies">Others</a>
+    <a class="site-nav-link barrio-regular" href="about.html" id="navAbout">About Me</a>
+  </nav>
 
   <main class="project">
-    <a class="project-back" href="index.html#about">← Back to My Work</a>
-    <span class="project-index be-vietnam-pro-medium">My Work</span>
-    <h1 class="project-title">LUAG Main Gallery</h1>
+    <div class="project-nav">
+      <a class="project-back" href="index.html#about">← Back</a>
+      <a class="project-next" href="last-call.html">Last Call →</a>
+    </div>
+    <span class="project-index">My Work</span>
+    <h1 class="project-title barrio-regular">LUAG Main Gallery</h1>
     <div class="project-hero-frame">
       <div class="project-hero-clip">
         <img
@@ -29,6 +38,9 @@
       <p>Wayfinding and floor map design for Lehigh University Art Galleries — helping visitors navigate the Main Gallery, living room, lab spaces, and lower level.</p>
     </div>
   </main>
+
+
+  <a class="to-top be-vietnam-pro-regular" href="#pageTop" id="toTop">Go to the Top</a>
 
   <script src="script.js"></script>
 </body>
