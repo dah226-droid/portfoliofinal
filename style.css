@@ -975,6 +975,9 @@ body.custom-cursor-active .site-nav-link {
 }
 
 .panel-about .work-feature-coming-frame {
+  --media-inset: 0.85rem;
+  --meta-gap: 0.55rem;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -985,6 +988,7 @@ body.custom-cursor-active .site-nav-link {
   background: var(--paper);
   box-sizing: border-box;
   padding: 0.85rem;
+  overflow: hidden;
 }
 
 .panel-about .work-feature-coming-label {
@@ -1406,7 +1410,14 @@ body.custom-cursor-active .site-nav-link {
 }
 
 .hobby-page {
+  max-width: none;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
   padding-top: 4vh;
+  padding-left: 6vw;
+  padding-right: 6vw;
+  box-sizing: border-box;
 }
 
 .hobby-page-title {
@@ -1428,6 +1439,7 @@ body.custom-cursor-active .site-nav-link {
 
 .hobby-gallery {
   margin-top: 2.75rem;
+  max-width: 980px;
 }
 
 .hobby-gallery-empty {
@@ -1449,6 +1461,96 @@ body.custom-cursor-active .site-nav-link {
   line-height: 1;
   color: var(--purple);
   text-align: center;
+}
+
+.photography-page {
+  padding-top: 0.35rem;
+  padding-bottom: 0;
+}
+
+.photography-page .project-back {
+  margin-bottom: 0.55rem;
+}
+
+.photography-page .hobby-page-title {
+  font-size: clamp(2.1rem, 6vw, 3.6rem);
+  margin-bottom: 0.45rem;
+}
+
+.photography-page .hobby-page-lead {
+  margin-bottom: 0;
+}
+
+.photo-pin {
+  margin-top: 0;
+  margin-left: -6vw;
+  margin-right: -6vw;
+  width: calc(100% + 12vw);
+}
+
+.photo-carousel {
+  position: sticky;
+  top: 5.2rem;
+  height: auto;
+  max-height: calc(100svh - 5.2rem);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0 0 1rem;
+}
+
+.photo-intro {
+  flex: 0 0 auto;
+  padding: 0 6vw 2.9rem;
+}
+
+.photo-track {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  padding: 0 6vw;
+  will-change: transform;
+}
+
+.photo-slide {
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.photo-slide img {
+  display: block;
+  height: min(58vh, calc(100svh - 14rem));
+  width: auto;
+  object-fit: contain;
+  border-radius: 0.85em 0.28em 1.1em 0.4em / 0.7em 0.9em 0.35em 0.95em;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-pin {
+    height: auto !important;
+  }
+
+  .photo-carousel {
+    position: relative;
+    top: auto;
+    height: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .photo-track {
+    transform: none !important;
+  }
+
+  .photo-slide {
+    scroll-snap-align: start;
+  }
 }
 
 .panel-contact {

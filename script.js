@@ -1153,6 +1153,65 @@
     });
   }
 
+  function initPhotoCarousel() {
+    const pin = document.getElementById('photoPin');
+    const carousel = document.getElementById('photoCarousel');
+    const track = document.getElementById('photoTrack');
+    if (!pin || !carousel || !track) return;
+    if (prefersReducedMotion) return;
+
+    let extra = 0;
+    let ticking = false;
+
+    function overflow() {
+      return Math.max(0, track.scrollWidth - carousel.clientWidth);
+    }
+
+    function measure() {
+      extra = overflow();
+      pin.style.height = `${carousel.offsetHeight + extra}px`;
+    }
+
+    function apply() {
+      extra = overflow();
+      const range = pin.offsetHeight - carousel.offsetHeight;
+      if (range <= 0 || extra <= 0) {
+        track.style.transform = 'translate3d(0,0,0)';
+        return;
+      }
+      const progress = Math.min(1, Math.max(0, window.scrollY / range));
+      track.style.transform = `translate3d(${(-extra * progress).toFixed(2)}px,0,0)`;
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        apply();
+      });
+    }
+
+    function onResize() {
+      measure();
+      apply();
+    }
+
+    Array.from(track.querySelectorAll('img')).forEach((img) => {
+      if (img.complete) return;
+      img.addEventListener('load', onResize, { once: true });
+      img.addEventListener('error', onResize, { once: true });
+    });
+
+    measure();
+    apply();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+    if (typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(onResize).observe(track);
+    }
+  }
+
   function initCustomCursor() {
     if (prefersReducedMotion || !window.matchMedia('(pointer: fine)').matches) return;
 
@@ -1177,6 +1236,7 @@
       if (!target || typeof target.closest !== 'function') return 1;
       if (target.closest('.site-nav-link')) return 1.45;
       if (target.closest('.about-resume')) return 1.12;
+      if (target.closest('.photo-slide')) return 1.12;
       if (target.closest('.hobby-link')) return 1.45;
       if (target.closest('.work-feature-link, .work-feature-name, .work-feature-clip, .project-hero-clip')) {
         return 1.12;
@@ -1207,7 +1267,7 @@
         );
       });
       cursor.classList.toggle('is-resume', scale > 1 && hit && hit.closest && hit.closest('.about-resume'));
-      cursor.classList.toggle('is-image', scale > 1 && hit && hit.closest && hit.closest('.work-feature-link, .work-feature-clip, .project-hero-clip'));
+      cursor.classList.toggle('is-image', scale > 1 && hit && hit.closest && hit.closest('.work-feature-link, .work-feature-clip, .project-hero-clip, .photo-slide'));
       if (!ticking) {
         ticking = true;
         requestAnimationFrame(paint);
@@ -1334,6 +1394,7 @@
     }
   }
 
+  initPhotoCarousel();
   initCustomCursor();
   initResumePreview();
 })();
