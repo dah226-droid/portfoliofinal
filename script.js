@@ -1474,6 +1474,24 @@
       }
     });
 
+    const toTopBtn = document.getElementById('toTop');
+    if (toTopBtn) {
+      toTopBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        landingReleased = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const settle = () => {
+          if (window.scrollY > 1) {
+            requestAnimationFrame(settle);
+            return;
+          }
+          forceTop();
+          bootLayout();
+        };
+        requestAnimationFrame(settle);
+      });
+    }
+
     buildMotion();
     bootLayout();
     requestAnimationFrame(bootLayout);
@@ -1483,6 +1501,14 @@
       document.fonts.ready.then(() => {
         forceTop();
         bootLayout();
+      });
+    }
+  } else if (isHomePage) {
+    const toTopBtn = document.getElementById('toTop');
+    if (toTopBtn) {
+      toTopBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
       });
     }
   }
