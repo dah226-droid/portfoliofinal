@@ -1493,7 +1493,47 @@
   initResumePreview();
   initIgProfile();
   initIgPost();
+  initCaseNav();
 })();
+
+function initCaseNav() {
+  const nav = document.getElementById('caseNav');
+  if (!nav) return;
+
+  const links = Array.from(nav.querySelectorAll('[data-case-nav]'));
+  const sections = links
+    .map((link) => document.getElementById(link.getAttribute('data-case-nav')))
+    .filter(Boolean);
+
+  if (!links.length || !sections.length) return;
+
+  function setActive(id) {
+    links.forEach((link) => {
+      link.classList.toggle('is-active', link.getAttribute('data-case-nav') === id);
+    });
+  }
+
+  function updateActive() {
+    const offset = 120;
+    let current = sections[0]?.id || '';
+    sections.forEach((section) => {
+      const top = section.getBoundingClientRect().top;
+      if (top - offset <= 0) current = section.id;
+    });
+    if (current) setActive(current);
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', () => {
+      const id = link.getAttribute('data-case-nav');
+      if (id) setActive(id);
+    });
+  });
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  window.addEventListener('resize', updateActive);
+  updateActive();
+}
 
 function initIgProfile() {
   const followBtn = document.getElementById('igFollow');

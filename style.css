@@ -111,6 +111,71 @@ body.custom-cursor-active .site-nav-link {
   overflow: visible;
 }
 
+.site-nav--with-case {
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  overflow-x: auto;
+}
+
+.site-nav-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(1rem, 2.5vw, 2.25rem);
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.case-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: clamp(0.55rem, 1.2vw, 1rem);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.case-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.case-nav-item {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+}
+
+.case-nav-link {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(0.72rem, 1.15vw, 0.95rem);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  text-transform: lowercase;
+  white-space: nowrap;
+  color: var(--gray);
+  padding: 0.25rem 0;
+  transition: color 0.2s ease;
+}
+
+.case-nav-link.is-active,
+.case-nav-link:hover {
+  color: var(--purple);
+}
+
+.case-section {
+  scroll-margin-top: 5.5rem;
+}
+
 .site-nav-link {
   font-family: var(--font-display);
   font-weight: 400;
@@ -1125,6 +1190,41 @@ body.custom-cursor-active .site-nav-link {
   line-height: 1.05;
 }
 
+.project-summary {
+  margin: -1.15rem 0 2rem;
+  max-width: 60ch;
+  color: var(--gray);
+  font-size: clamp(0.92rem, 1.5vw, 1.05rem);
+  line-height: 1.55;
+}
+
+.project-summary p {
+  margin: 0 0 0.2rem;
+}
+
+.project-summary p:nth-child(2) {
+  margin-bottom: 1.7rem;
+}
+
+.project-summary p:last-child {
+  margin-bottom: 0;
+}
+
+.project-summary strong {
+  font-weight: 700;
+}
+
+.project-year {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-style: normal;
+  font-size: calc(0.55em * 0.45);
+  letter-spacing: 0.02em;
+  color: var(--gray);
+  white-space: nowrap;
+  margin-left: -0.2cm;
+}
+
 .about-name {
   font-family: var(--font-display);
   color: var(--purple);
@@ -1343,12 +1443,38 @@ body.custom-cursor-active .site-nav-link {
   object-position: center calc(50% - 3cm);
 }
 
+.project-body {
+  width: 90%;
+  max-width: min(90%, 738px);
+}
+
 .project-body p {
-  color: var(--gray-dark);
+  color: #000;
   font-size: 1.05rem;
   line-height: 1.7;
-  max-width: 60ch;
+  max-width: none;
   margin: 0 0 1.2rem;
+}
+
+.project-subhead {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(1.45rem, 3.4vw, 2.25rem);
+  line-height: 1.15;
+  color: var(--purple);
+  margin: 2.4rem 0 0.85rem;
+}
+
+.project-subhead:first-of-type {
+  margin-top: 2rem;
+}
+
+.project-subhead--right {
+  width: 100%;
+  max-width: none;
+  text-align: right;
+  margin-top: 2rem;
 }
 
 .panel-about h2,
@@ -2343,6 +2469,11 @@ body.custom-cursor-active .site-nav-link {
     max-width: 100%;
   }
 
+  .project-body {
+    width: 100%;
+    max-width: 100%;
+  }
+
   .project-hero-clip {
     border: 0;
     padding: 0;
@@ -2453,6 +2584,11 @@ body.custom-cursor-active .site-nav-link {
     justify-content: flex-end;
     padding: 0.85rem 5vw;
     gap: 1rem;
+  }
+
+  .site-nav--with-case {
+    justify-content: space-between;
+    flex-wrap: nowrap;
   }
 
   .hobby-doodles {
