@@ -5,7 +5,7 @@
   --gray: #9a9a9a;
   --gray-dark: #7a7a7a;
   --ink: #3a3a3a;
-  --paper: #fffcf2;
+  --paper: #F9F6E4;
 
   --font-display: "Barrio", system-ui;
   --font-body: "Be Vietnam Pro", sans-serif;
@@ -1117,6 +1117,11 @@ body.custom-cursor-active .site-nav-link {
 .about-page .about-copy p {
   max-width: none;
   width: 100%;
+}
+
+.about-page .project-body.about-copy {
+  width: 100%;
+  max-width: none;
 }
 
 .project-back {
