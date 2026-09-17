@@ -1214,6 +1214,91 @@
     }
   }
 
+  function initPhotoLightbox() {
+    const track = document.getElementById('photoTrack');
+    const panel = document.getElementById('photoPanel');
+    const panelImg = document.getElementById('photoPanelImage');
+    const panelTitle = document.getElementById('photoPanelTitle');
+    const prevBtn = document.getElementById('photoPrev');
+    const nextBtn = document.getElementById('photoNext');
+    if (!track || !panel || !panelImg || !panelTitle) return;
+
+    const slides = Array.from(track.querySelectorAll('.photo-slide-open'));
+    let index = 0;
+    let lastTrigger = null;
+
+    function showAt(i) {
+      if (!slides.length) return;
+      index = (i + slides.length) % slides.length;
+      const button = slides[index];
+      const img = button.querySelector('img');
+      if (!img) return;
+      panelImg.src = img.currentSrc || img.src;
+      panelImg.alt = img.alt || '';
+      panelTitle.textContent = 'Photography';
+      lastTrigger = button;
+    }
+
+    function openFrom(button) {
+      const found = slides.indexOf(button);
+      showAt(found < 0 ? 0 : found);
+      panel.classList.add('is-open');
+      panel.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      if (nextBtn) nextBtn.focus();
+    }
+
+    function close() {
+      if (!panel.classList.contains('is-open')) return;
+      panel.classList.remove('is-open');
+      panel.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastTrigger) lastTrigger.focus();
+    }
+
+    function step(delta) {
+      if (!panel.classList.contains('is-open')) return;
+      showAt(index + delta);
+    }
+
+    track.addEventListener('click', (e) => {
+      const button = e.target.closest('.photo-slide-open');
+      if (!button) return;
+      e.preventDefault();
+      openFrom(button);
+    });
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        step(-1);
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        step(1);
+      });
+    }
+
+    panel.addEventListener('click', (e) => {
+      if (e.target.closest('[data-photo-close]')) close();
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (!panel.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        step(-1);
+      }
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        step(1);
+      }
+    });
+  }
+
   function initCustomCursor() {
     if (prefersReducedMotion || !window.matchMedia('(pointer: fine)').matches) return;
 
@@ -1238,7 +1323,7 @@
       if (!target || typeof target.closest !== 'function') return 1;
       if (target.closest('.site-nav-link')) return 1.45;
       if (target.closest('.about-resume')) return 1.12;
-      if (target.closest('.photo-slide')) return 1.12;
+      if (target.closest('.photo-slide, .photo-slide-open, .photo-panel-close, .photo-panel-nav')) return 1.12;
       if (target.closest('.hobby-link')) return 1.45;
       if (target.closest('.work-feature-link, .work-feature-name, .work-feature-clip, .project-hero-clip')) {
         return 1.12;
@@ -1397,6 +1482,7 @@
   }
 
   initPhotoCarousel();
+  initPhotoLightbox();
   initCustomCursor();
   initResumePreview();
 })();
