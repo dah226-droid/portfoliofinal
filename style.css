@@ -1497,9 +1497,16 @@ body.custom-cursor-active .site-nav-link {
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   box-sizing: border-box;
   padding: 0 0 1rem;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+.photo-carousel.is-scroll-driven {
+  overflow: clip;
 }
 
 .photo-intro {

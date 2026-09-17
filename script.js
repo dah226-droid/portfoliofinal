@@ -1160,6 +1160,8 @@
     if (!pin || !carousel || !track) return;
     if (prefersReducedMotion) return;
 
+    carousel.classList.add('is-scroll-driven');
+
     let extra = 0;
     let ticking = false;
 
