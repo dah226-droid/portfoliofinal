@@ -625,7 +625,7 @@ body.custom-cursor-active .site-nav-link {
 }
 
 .discipline--ux {
-  left: calc(9vw - 0.7cm);
+  left: calc(9vw - 0.1cm);
   bottom: calc(59%);
   --tilt: -7deg;
   font-family: "Syne", "Be Vietnam Pro", sans-serif;
@@ -2492,7 +2492,7 @@ body.custom-cursor-active .site-nav-link {
     bottom: calc(var(--hero-gap) * 3.8);
   }
 
-  .discipline--ux { left: calc(5vw - 0.7cm); bottom: calc(70%); }
+  .discipline--ux { left: calc(5vw - 0.3cm); bottom: calc(70%); }
   .discipline--graphic { left: 18vw; bottom: calc(70% - 0.5cm); }
   .discipline--product { left: 5vw; bottom: calc(26% + 0.5cm); }
   .discipline--web { left: 22vw; bottom: calc(32% - 0.5cm); }
