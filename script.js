@@ -1168,27 +1168,90 @@
 
     let x = -100;
     let y = -100;
+    let scale = 1;
     let ticking = false;
+    const navLinks = Array.from(document.querySelectorAll('.site-nav-link'));
+    const hobbyLinks = Array.from(document.querySelectorAll('.hobby-link'));
+
+    function hoverScale(target) {
+      if (!target || typeof target.closest !== 'function') return 1;
+      if (target.closest('.site-nav-link')) return 1.45;
+      if (target.closest('.about-resume')) return 1.12;
+      if (target.closest('.hobby-link')) return 1.45;
+      if (target.closest('.work-feature-link, .work-feature-name, .work-feature-clip, .project-hero-clip')) {
+        return 1.12;
+      }
+      return 1;
+    }
 
     function paint() {
-      cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      cursor.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
       ticking = false;
     }
 
-    window.addEventListener('mousemove', (e) => {
+    function onMove(e) {
       x = e.clientX;
       y = e.clientY;
-      const overResume = e.target.closest('.about-resume');
-      const overImage = !overResume && e.target.closest(
-        '.work-feature-link, .work-feature-name, .work-feature-clip, .project-hero-clip, .site-nav-link'
-      );
-      cursor.classList.toggle('is-resume', Boolean(overResume));
-      cursor.classList.toggle('is-image', Boolean(overImage));
+      const hit = document.elementFromPoint(e.clientX, e.clientY) || e.target;
+      scale = hoverScale(hit);
+      navLinks.forEach((el) => {
+        el.classList.toggle(
+          'is-hot',
+          Boolean(hit && typeof hit.closest === 'function' && hit.closest('.site-nav-link') === el)
+        );
+      });
+      hobbyLinks.forEach((el) => {
+        el.classList.toggle(
+          'is-hot',
+          Boolean(hit && typeof hit.closest === 'function' && hit.closest('.hobby-link') === el)
+        );
+      });
+      cursor.classList.toggle('is-resume', scale > 1 && hit && hit.closest && hit.closest('.about-resume'));
+      cursor.classList.toggle('is-image', scale > 1 && hit && hit.closest && hit.closest('.work-feature-link, .work-feature-clip, .project-hero-clip'));
       if (!ticking) {
         ticking = true;
         requestAnimationFrame(paint);
       }
-    }, { passive: true });
+    }
+
+    window.addEventListener('mousemove', onMove, { passive: true });
+    navLinks.forEach((link) => {
+      link.addEventListener('mouseenter', () => {
+        navLinks.forEach((el) => el.classList.toggle('is-hot', el === link));
+        scale = 1.45;
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(paint);
+        }
+      });
+      link.addEventListener('mouseleave', (e) => {
+        link.classList.remove('is-hot');
+        const next = e.relatedTarget;
+        scale = next && next.closest && next.closest('.site-nav-link') ? 1.45 : 1;
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(paint);
+        }
+      });
+    });
+    hobbyLinks.forEach((link) => {
+      link.addEventListener('mouseenter', () => {
+        hobbyLinks.forEach((el) => el.classList.toggle('is-hot', el === link));
+        scale = 1.45;
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(paint);
+        }
+      });
+      link.addEventListener('mouseleave', () => {
+        link.classList.remove('is-hot');
+        scale = 1;
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(paint);
+        }
+      });
+    });
   }
 
   function initNavAboutCue() {

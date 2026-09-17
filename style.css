@@ -56,7 +56,9 @@ body.custom-cursor-active {
 }
 
 body.custom-cursor-active a,
-body.custom-cursor-active button {
+body.custom-cursor-active button,
+body.custom-cursor-active .site-nav,
+body.custom-cursor-active .site-nav-link {
   cursor: none;
 }
 
@@ -64,44 +66,20 @@ body.custom-cursor-active button {
   position: fixed;
   top: 0;
   left: 0;
-  width: auto;
+  width: 2.55rem;
+  aspect-ratio: 559 / 541;
   height: auto;
   margin: 0;
-  border-radius: 0;
-  background: none;
+  padding: 0;
   border: none;
+  border-radius: 0;
+  background: url("assets/cursor.png") no-repeat 0 0 / contain;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 10000;
   transform: translate3d(-100px, -100px, 0);
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 3.2rem;
-  line-height: 1;
-  color: var(--purple);
-  -webkit-text-stroke: 2px #ffffff;
-  paint-order: stroke fill;
-  will-change: transform, contents;
-}
-
-.custom-cursor::before {
-  content: "?";
-}
-
-.custom-cursor.is-image::before {
-  content: "!";
-}
-
-.custom-cursor.is-about::before {
-  content: ":D";
-}
-
-.custom-cursor.is-about.is-image::before {
-  content: "!";
-}
-
-.custom-cursor.is-resume::before,
-.custom-cursor.is-about.is-resume::before {
-  content: "xD";
+  transform-origin: 4% 6%;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -109,6 +87,11 @@ body.custom-cursor-active button {
   .block { animation: none !important; transition: none !important; }
   .scroll-cue-arrow { animation: none; }
   .nav-about-cue-arrow { animation: none; }
+  .hero-flower { animation: none !important; }
+  .hobby-camera,
+  .hobby-phone { animation: none !important; }
+  .hobby-camera { transform: rotate(-4deg); }
+  .hobby-phone { transform: rotate(5deg); }
   body.custom-cursor-active { cursor: auto; }
   .custom-cursor { display: none; }
 }
@@ -124,9 +107,7 @@ body.custom-cursor-active button {
   flex-wrap: wrap;
   gap: clamp(1rem, 2.5vw, 2.25rem);
   padding: 1.1rem 6vw;
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--paper);
   overflow: visible;
 }
 
@@ -134,17 +115,29 @@ body.custom-cursor-active button {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(1.05rem, 2vw, 1.65rem);
-  line-height: 1;
+  line-height: 1.2;
   color: var(--purple);
   text-decoration: none;
-  transition: color 0.2s ease;
   flex-shrink: 0;
   white-space: nowrap;
+  display: inline-block;
+  padding: 0.45rem 0.15rem;
+  transform: scale(1);
+  transform-origin: center;
+  transition: color 0.2s ease, transform 0.18s ease;
 }
 
 .site-nav-link:hover,
+.site-nav-link.is-hot,
 .site-nav-link[aria-current="page"] {
   color: var(--purple-deep);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-nav-link:hover,
+  .site-nav-link.is-hot {
+    transform: scale(1.16);
+  }
 }
 
 .nav-about-cue {
@@ -201,6 +194,14 @@ body.custom-cursor-active button {
   overflow: visible;
 }
 
+.hero-name-wrap {
+  display: inline-grid;
+  grid-template-columns: max-content auto;
+  align-items: end;
+  column-gap: 0.32em;
+  max-width: 100%;
+}
+
 .hero-name {
   font-family: var(--font-display);
   font-weight: 400;
@@ -209,6 +210,56 @@ body.custom-cursor-active button {
   line-height: 0.95;
   margin: 0;
   letter-spacing: 0.01em;
+}
+
+.hero-flowers {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.22em;
+  height: clamp(2rem, 6vw, 4.2rem);
+  margin-bottom: 0.14em;
+  margin-left: 0.4cm;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hero-flower {
+  display: block;
+  height: 78%;
+  width: auto;
+  transform-origin: center center;
+  animation: flower-spin 14s linear infinite;
+}
+
+.hero-flower:nth-child(1) {
+  height: 52%;
+}
+
+.hero-flower:nth-child(2) {
+  height: 78%;
+  animation-duration: 18s;
+  animation-direction: reverse;
+}
+
+.hero-flower:nth-child(3) {
+  height: 68%;
+  animation-duration: 11s;
+}
+
+.hero-flower:nth-child(4) {
+  height: 62%;
+  animation-duration: 16s;
+  animation-direction: reverse;
+}
+
+.hero-flower:nth-child(5) {
+  height: 60%;
+  animation-duration: 13s;
+}
+
+@keyframes flower-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .hero-word {
@@ -722,7 +773,7 @@ body.custom-cursor-active button {
   text-align: right;
   max-width: none;
   flex-shrink: 0;
-  transform: translate(2rem, calc(var(--hero-gap) * -0.9));
+  transform: translate(calc(2rem + 0.6cm), calc(var(--hero-gap) * -3.9));
 }
 
 .scroll-cue-arrow {
@@ -1273,7 +1324,131 @@ body.custom-cursor-active button {
 }
 
 .panel-hobbies .panel-index {
-  margin-bottom: calc(var(--section-gap, 3.5rem) * 1.1);
+  margin-bottom: 0.25rem;
+}
+
+.hobby-doodles {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: clamp(5rem, 14vw, 12rem);
+  margin-top: 1rem;
+}
+
+.hobby-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+
+.hobby-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transform-origin: center 58%;
+  transition: transform 0.22s ease;
+}
+
+.hobby-link:hover,
+.hobby-link.is-hot,
+.hobby-link:focus-visible {
+  transform: scale(1.1);
+}
+
+.hobby-link:hover .hobby-camera,
+.hobby-link.is-hot .hobby-camera,
+.hobby-link:hover .hobby-phone,
+.hobby-link.is-hot .hobby-phone {
+  animation-duration: 0.85s;
+}
+
+.hobby-link:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 0.6rem;
+}
+
+.hobby-label {
+  margin-top: clamp(0.85rem, 1.8vw, 1.4rem);
+  color: var(--purple);
+  font-size: clamp(1.35rem, 2.5vw, 2.05rem);
+  line-height: 0.9;
+  text-align: center;
+}
+
+.hobby-camera,
+.hobby-phone {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  transform-origin: center center;
+  animation: hobby-shake 4.2s ease-in-out infinite;
+}
+
+.hobby-camera {
+  width: min(28vw, 18rem);
+  --tilt: -4deg;
+}
+
+.hobby-phone {
+  height: min(34vw, 16.5rem);
+  width: auto;
+  --tilt: 5deg;
+  animation-duration: 4.8s;
+  animation-delay: -1.6s;
+}
+
+@keyframes hobby-shake {
+  0%, 100% { transform: rotate(calc(var(--tilt) - 3deg)); }
+  25%      { transform: rotate(calc(var(--tilt) + 4deg)); }
+  50%      { transform: rotate(calc(var(--tilt) - 4deg)); }
+  75%      { transform: rotate(calc(var(--tilt) + 3deg)); }
+}
+
+.hobby-page {
+  padding-top: 4vh;
+}
+
+.hobby-page-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--purple);
+  font-size: clamp(2.6rem, 8vw, 5.2rem);
+  line-height: 0.95;
+  margin: 0 0 1.1rem;
+}
+
+.hobby-page-lead {
+  max-width: 38ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  line-height: 1.65;
+}
+
+.hobby-gallery {
+  margin-top: 2.75rem;
+}
+
+.hobby-gallery-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: min(42vh, 22rem);
+  border: 0.7rem solid var(--purple);
+  border-radius: 1em 0.35em 1.4em 0.55em / 0.9em 1.1em 0.45em 1.2em;
+  background: var(--paper);
+  box-sizing: border-box;
+  padding: 1.5rem;
+}
+
+.hobby-gallery-empty-label {
+  font-weight: 400;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1;
+  color: var(--purple);
+  text-align: center;
 }
 
 .panel-contact {
@@ -1420,6 +1595,19 @@ body.custom-cursor-active button {
     gap: 1rem;
   }
 
+  .hobby-doodles {
+    margin-top: 0.75rem;
+    gap: 3.25rem;
+  }
+
+  .hobby-camera {
+    width: min(48vw, 14rem);
+  }
+
+  .hobby-phone {
+    height: min(42vw, 13rem);
+  }
+
   .site-nav-link {
     font-size: clamp(1.05rem, 4.5vw, 1.35rem);
     padding: 0.35rem 0;
@@ -1442,8 +1630,17 @@ body.custom-cursor-active button {
     padding-right: 5vw;
   }
 
+  .hero-name-wrap {
+    grid-template-columns: minmax(0, max-content) auto;
+    column-gap: 0.2em;
+  }
+
   .hero-name {
     font-size: clamp(2.45rem, 12vw, 3.6rem);
+  }
+
+  .hero-flowers {
+    height: clamp(1.2rem, 8vw, 2.1rem);
   }
 
   .hero-tagline {
@@ -1620,6 +1817,10 @@ body.custom-cursor-active button {
 @media (max-width: 400px) {
   .hero-name {
     font-size: clamp(2.15rem, 11.5vw, 2.8rem);
+  }
+
+  .hero-flowers {
+    height: clamp(1.05rem, 7.5vw, 1.7rem);
   }
 
   .block-field,
