@@ -1099,7 +1099,7 @@ body.custom-cursor-active .site-nav-link {
   padding-top: 2.5vh;
   padding-left: 4vw;
   padding-right: 4vw;
-  padding-bottom: 10vh;
+  padding-bottom: calc(10vh - 1.3cm);
   box-sizing: border-box;
 }
 
