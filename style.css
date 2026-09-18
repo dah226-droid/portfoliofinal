@@ -63,7 +63,8 @@ body.custom-cursor-active .nabi-flipbook,
 body.custom-cursor-active .nabi-flipbook *,
 body.custom-cursor-active .nabi-flipbook-sheet,
 body.custom-cursor-active .nabi-flipbook-nav,
-body.custom-cursor-active .nabi-pdf-link {
+body.custom-cursor-active .nabi-pdf-link,
+body.custom-cursor-active .luag-medium-link {
   cursor: none !important;
 }
 
@@ -1265,6 +1266,35 @@ body.custom-cursor-active .nabi-pdf-link {
 
 .luag-intro .project-title {
   margin-bottom: 1.35rem;
+}
+
+.luag-intro-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(12rem, 0.9fr);
+  gap: clamp(0.5rem, 1.2vw, 1rem);
+  align-items: end;
+  width: 100%;
+  margin: 0 0 1.35rem;
+}
+
+.luag-intro-head-main {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.85rem;
+  min-width: 0;
+  width: 100%;
+}
+
+.luag-intro-head-main .project-title {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.luag-intro-head .luag-title-compass {
+  margin-left: 0;
+  justify-self: end;
 }
 
 .luag-title-row {
@@ -2841,6 +2871,11 @@ body.custom-cursor-active .nabi-flip-panel-close {
   .luag-hero-panel:hover img {
     transform: scale(1.06);
   }
+
+  .luag-media--signage:hover img,
+  .luag-final-media:hover img {
+    transform: scale(1.06);
+  }
 }
 
 .luag-hero-copy {
@@ -3047,6 +3082,7 @@ body.custom-cursor-active .nabi-flip-panel-close {
   width: 100%;
   height: auto;
   border-radius: inherit;
+  transition: transform 0.45s ease;
 }
 
 .luag-split {
@@ -3563,14 +3599,14 @@ body:has(.umami-page-doodle) .to-top {
   border: 0;
   background: transparent;
   overflow: hidden;
-  border-radius: 1em 0.35em 1.4em 0.55em / 0.9em 1.1em 0.45em 1.2em;
+  border-radius: 0;
 }
 
 .luag-research-media img {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: inherit;
+  border-radius: 0;
 }
 
 .luag-research-copy .project-subhead {
@@ -3613,6 +3649,152 @@ body:has(.umami-page-doodle) .to-top {
   margin: 0 0 3.5rem;
   padding-bottom: 1.8cm;
   border-bottom: 3px solid #cfcfcf;
+}
+
+.luag-digital-pin {
+  margin: 0 0 2.5rem;
+  padding-bottom: 3.25rem;
+  border-bottom: 3px solid #cfcfcf;
+}
+
+.luag-3d-pin {
+  margin: 0 0 2.5rem;
+  padding-bottom: 3.25rem;
+  border-bottom: 3px solid #cfcfcf;
+}
+
+.luag-final-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  align-items: start;
+  width: 100%;
+}
+
+.luag-final-media {
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 1em 0.35em 1.4em 0.55em / 0.9em 1.1em 0.45em 1.2em;
+}
+
+.luag-final-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: inherit;
+  transition: transform 0.45s ease;
+}
+
+.luag-final-copy.project-body {
+  width: 100%;
+  max-width: none;
+  margin: 1.25rem 0 0;
+  text-align: left;
+}
+
+.luag-final-copy .luag-list {
+  margin: 0;
+}
+
+.luag-takeaways-body.project-body {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  text-align: left;
+}
+
+.luag-takeaways-body p {
+  margin: 0 0 1rem;
+  color: var(--ink);
+}
+
+.luag-takeaways-body p:last-of-type {
+  margin-bottom: 0;
+}
+
+.luag-medium-link {
+  position: relative;
+  display: block;
+  margin: 0;
+  width: fit-content;
+  line-height: 0;
+  text-decoration: none;
+  border: none;
+  padding: 0;
+  flex: 0 0 auto;
+  align-self: flex-end;
+  transform: translateX(-2.5cm);
+}
+
+.luag-medium-icon {
+  display: block;
+  width: clamp(1.229rem, 2.05vw, 1.587rem);
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.22s ease;
+  transform-origin: center center;
+}
+
+.luag-medium-link::after {
+  content: attr(data-label);
+  position: absolute;
+  right: calc(100% + 0.75rem);
+  left: auto;
+  top: 50%;
+  transform: translateY(-50%) translateX(0.2rem);
+  padding: 0.35rem 0.65rem;
+  border: none;
+  border-radius: 0.85rem;
+  background: var(--paper);
+  color: var(--purple);
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  z-index: 5;
+}
+
+.luag-medium-link::before {
+  content: "";
+  position: absolute;
+  right: calc(100% + 0.75rem - 0.42rem);
+  top: 50%;
+  width: 0.55rem;
+  height: 0.55rem;
+  border: none;
+  background: var(--paper);
+  transform: translateY(-50%) rotate(-45deg) translateX(0.2rem);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  z-index: 6;
+}
+
+.luag-medium-link:hover .luag-medium-icon,
+.luag-medium-link:focus-visible .luag-medium-icon {
+  transform: scale(1.18);
+}
+
+.luag-medium-link:hover::after,
+.luag-medium-link:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+
+.luag-medium-link:hover::before,
+.luag-medium-link:focus-visible::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) rotate(-45deg) translateX(0);
 }
 
 .luag-signage-stroke-icon {
@@ -5025,6 +5207,15 @@ body:has(.umami-page-doodle) .to-top {
     gap: 1.5rem;
   }
 
+  .luag-intro-head {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+
+  .luag-intro-head-main {
+    flex-wrap: wrap;
+  }
+
   .luag-hero-panel {
     min-height: 0;
     width: 100%;
@@ -5192,6 +5383,11 @@ body:has(.umami-page-doodle) .to-top {
 
   .luag-digital-layout {
     flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .luag-final-row {
+    grid-template-columns: 1fr;
     gap: 1.25rem;
   }
 
