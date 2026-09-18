@@ -2910,6 +2910,16 @@ body.custom-cursor-active .nabi-flip-panel-close {
   color: var(--gray);
 }
 
+.luag-hero-stage--umami .luag-hero-copy .project-summary,
+.luag-hero-stage--umami .luag-hero-copy .project-body {
+  margin-left: 1cm;
+}
+
+.luag-hero-stage:has(.luag-hero-panel--nabi) .luag-hero-copy .project-summary,
+.luag-hero-stage:has(.luag-hero-panel--nabi) .luag-hero-copy .project-body {
+  margin-left: -0.6cm;
+}
+
 .luag-hero-copy .project-summary p {
   margin: 0 0 0.35rem;
 }
@@ -2953,8 +2963,9 @@ body.custom-cursor-active .nabi-flip-panel-close {
 .umami-em,
 .nabi-em,
 .tricoard-em,
-.lastcall-em {
-  color: #000;
+.lastcall-em,
+.dayul-em {
+  color: var(--ink);
   font-weight: 700;
 }
 
