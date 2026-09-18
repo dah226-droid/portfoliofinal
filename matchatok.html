@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barrio&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=nabiarro3">
+<link rel="stylesheet" href="style.css?v=nabitake4">
 </head>
 <body class="be-vietnam-pro-regular project-page" id="pageTop">
 
@@ -47,7 +47,27 @@
       </div>
     </section>
 
-    <section class="case-section nabi-article" aria-label="Matcha article flipbook">
+    <section id="overview" class="case-section nabi-overview">
+      <h2 class="project-subhead barrio-regular">Overview</h2>
+      <div class="nabi-overview-row">
+        <div class="nabi-overview-col">
+          <p class="nabi-overview-label be-vietnam-pro-regular">Matcha Article</p>
+          <div class="nabi-overview-body project-body">
+            <p>Matcha has been starting become a really big trend since 2025. This article informs people the history of Matcha which is Japan and China. Also, criticizing that people’s using Japanese and Chinese culture as a trend. This huge trend led to a severe shortage of Matcha and talking about a lot of Matcha related items.</p>
+            <p>Using the photos and prompt that NABI magazine provided, I used Adobe InDesign to create an editorial design. I used Adobe Photoshop to make the image look better and blend better with the minimal concept that I was going for.</p>
+          </div>
+        </div>
+        <div class="nabi-overview-col">
+          <p class="nabi-overview-label be-vietnam-pro-regular">Kimchi Article</p>
+          <div class="nabi-overview-body project-body">
+            <p>This article introduces readers about Kimchi. It delivers history of Kimchi. Korean’s culinarily culture and how Kimchi is made. This article also talks about how beneficial Kimchi is. There are some NYC restaurants recommendations since this magazine is based on NYC.</p>
+            <p>With the illustrations I got from NABI, I tried to match the overall magazine page vibe that goes along with the illustrations. Since, Kimchi is Korean culture, I added some Korean words that are related to Kimchi. Also pulled out some of the quotes from the article to make the magazine page feel more full and fun.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-section nabi-article nabi-article--divided" aria-label="Matcha article flipbook">
       <h2 class="nabi-article-title barrio-regular">Matcha Article</h2>
       <div class="nabi-flipbook" data-nabi-flipbook data-flip-mode="spread">
         <button class="nabi-flipbook-nav nabi-flipbook-prev" type="button" aria-label="Previous page" disabled>
@@ -93,6 +113,12 @@
         </button>
       </div>
       <p class="nabi-flipbook-meta be-vietnam-pro-regular" data-flipbook-meta>1 / 3 — pages 1–2</p>
+      <a
+        class="nabi-pdf-link barrio-regular"
+        href="assets/nabi-matcha/matcha-article.pdf"
+        target="_blank"
+        rel="noopener"
+      >View PDF file</a>
     </section>
 
     <section class="case-section nabi-article" aria-label="Kimchi article flipbook">
@@ -126,11 +152,36 @@
         </button>
       </div>
       <p class="nabi-flipbook-meta be-vietnam-pro-regular" data-flipbook-meta>1 / 3 — cover</p>
+      <a
+        class="nabi-pdf-link barrio-regular"
+        href="assets/nabi-kimchi/kimchi-article.pdf"
+        target="_blank"
+        rel="noopener"
+      >View PDF file</a>
+    </section>
+
+    <section id="takeaways" class="case-section nabi-takeaways">
+      <h2 class="project-subhead barrio-regular">Key takeaways</h2>
+      <div class="nabi-takeaways-body project-body">
+        <p>This was my first time trying Adobe InDesign and also editorial design at the same time. Initially it was really challenging to figure out how to make the page feel full and interesting for the readers. However, with the grid system and using typography I was able to achieve it.</p>
+        <p>Another challenge was for Kimchi article especially there were limited illustrations which made it really hard for me to make the page more diverse. However, using point color (red) and different typefaces I was able to execute the magazine page that makes article readable.</p>
+        <p>I also learned that pulling out quotes, even though it is still in the article can be really helpful for article to me more diverse. Overall it was a really good experience for me to understand Adobe InDesign and editorial design in general.</p>
+      </div>
     </section>
   </main>
 
   <a class="to-top be-vietnam-pro-regular" href="#pageTop" id="toTop">Go to the Top</a>
 
-  <script src="script.js?v=nabimatcha1"></script>
+  <div class="nabi-flip-panel" id="nabiFlipPanel" aria-hidden="true">
+    <div class="nabi-flip-panel-backdrop" data-flip-panel-close></div>
+    <div class="nabi-flip-panel-dialog" role="dialog" aria-modal="true" aria-label="Article flipbook">
+      <button class="nabi-flip-panel-close" type="button" data-flip-panel-close aria-label="Close flipbook">
+        <img src="assets/flip-close-white.png?v=2" alt="" width="91" height="93">
+      </button>
+      <div class="nabi-flip-panel-slot" data-flip-panel-slot></div>
+    </div>
+  </div>
+
+  <script src="script.js?v=nabipanel9"></script>
 </body>
 </html>

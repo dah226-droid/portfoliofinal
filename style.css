@@ -62,7 +62,8 @@ body.custom-cursor-active .site-nav-link,
 body.custom-cursor-active .nabi-flipbook,
 body.custom-cursor-active .nabi-flipbook *,
 body.custom-cursor-active .nabi-flipbook-sheet,
-body.custom-cursor-active .nabi-flipbook-nav {
+body.custom-cursor-active .nabi-flipbook-nav,
+body.custom-cursor-active .nabi-pdf-link {
   cursor: none !important;
 }
 
@@ -1187,7 +1188,7 @@ body.custom-cursor-active .nabi-flipbook-nav {
 }
 
 .project-page:not(.is-about-page) .project-index {
-  color: var(--ink);
+  color: #000;
   font-weight: 400;
   font-size: clamp(0.85rem, 1.3vw, 1rem);
 }
@@ -1415,11 +1416,119 @@ body.custom-cursor-active .nabi-flipbook-nav {
   gap: 3.9rem;
 }
 
+.nabi-overview {
+  width: 100%;
+  margin: 0 0 1.75rem;
+}
+
+.nabi-overview .project-subhead {
+  margin: 2rem 0 1rem;
+  text-align: left;
+}
+
+.nabi-overview-row {
+  display: grid;
+  grid-template-columns: minmax(0, calc(50% + 0.5cm)) minmax(0, calc(50% - 0.5cm));
+  width: 100%;
+  align-items: stretch;
+  position: relative;
+}
+
+.nabi-overview-row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% + 0.5cm);
+  width: 3px;
+  background: #cfcfcf;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.nabi-overview-col {
+  min-width: 0;
+}
+
+.nabi-overview-label {
+  margin: 0 0 0.85rem;
+  color: #000;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  line-height: 1.45;
+}
+
+.nabi-overview-body {
+  max-width: none;
+}
+
+.nabi-overview-body p {
+  margin: 0 0 1rem;
+  color: var(--ink);
+}
+
+.nabi-overview-body p:last-child {
+  margin-bottom: 0;
+}
+
+.nabi-overview-row .nabi-overview-col:first-child {
+  padding-right: clamp(1rem, 2.5vw, 2rem);
+}
+
+.nabi-overview-row .nabi-overview-col:last-child {
+  padding-left: clamp(1rem, 2.5vw, 2rem);
+}
+
 .nabi-article {
   width: 100%;
   margin: 0 0 4rem;
   padding: 0;
   box-sizing: border-box;
+}
+
+.nabi-article:has(+ .nabi-takeaways) {
+  margin-bottom: 0.5rem;
+}
+
+.nabi-takeaways {
+  width: 100%;
+  margin: 2.5rem 0 0.5rem;
+}
+
+.nabi-takeaways .project-subhead {
+  margin: 0 0 0.85rem;
+}
+
+.nabi-takeaways-body,
+.nabi-takeaways-body.project-body {
+  max-width: none;
+  width: 100%;
+}
+
+.nabi-takeaways-body p {
+  margin: 0 0 1rem;
+  color: var(--ink);
+  max-width: none;
+  width: 100%;
+}
+
+.nabi-takeaways-body p:last-child {
+  margin-bottom: 0;
+}
+
+.project.luag-page:has(.nabi-article) {
+  padding-bottom: 2.5vh;
+}
+
+.project-page:has(.nabi-article) .to-top {
+  margin-top: calc(0.35rem + 1cm);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+}
+
+.nabi-article--divided {
+  padding-bottom: 3.25rem;
+  margin-bottom: 3.25rem;
+  border-bottom: 3px solid #cfcfcf;
 }
 
 .nabi-article-title {
@@ -1428,6 +1537,10 @@ body.custom-cursor-active .nabi-flipbook-nav {
   font-weight: 400;
   color: var(--purple);
   text-align: left;
+}
+
+.nabi-article--divided .nabi-article-title {
+  margin-top: 1cm;
 }
 
 .nabi-flipbook {
@@ -1442,13 +1555,22 @@ body.custom-cursor-active .nabi-flipbook-nav {
   -webkit-user-select: none;
 }
 
+.nabi-flipbook-prev {
+  grid-column: 1;
+}
+
 .nabi-flipbook-stage {
   position: relative;
+  grid-column: 2;
   width: 100%;
   max-width: 46rem;
   margin: 0 auto;
   perspective: 2400px;
   overflow: visible;
+}
+
+.nabi-flipbook-next {
+  grid-column: 3;
 }
 
 .nabi-flipbook-book {
@@ -1578,8 +1700,8 @@ body.custom-cursor-active .nabi-flipbook-nav {
 }
 
 .nabi-flipbook-nav:disabled {
-  opacity: 0.28;
-  cursor: default;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .nabi-flipbook-meta {
@@ -1591,6 +1713,123 @@ body.custom-cursor-active .nabi-flipbook-nav {
   opacity: 0.72;
 }
 
+.nabi-pdf-link {
+  display: block;
+  width: fit-content;
+  margin: 2.25rem auto 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  line-height: 1.2;
+  color: var(--purple);
+  text-decoration: none;
+  text-align: center;
+  border: none;
+  border-bottom: 2px solid var(--purple);
+  padding: 0 0 0.15rem;
+  background: none;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.18s ease;
+}
+
+.nabi-pdf-link:hover {
+  color: var(--purple-deep);
+  border-bottom-color: var(--purple-deep);
+  transform: scale(1.03);
+}
+
+.nabi-flip-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3vh 3vw;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.nabi-flip-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.nabi-flip-panel-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(40, 30, 45, 0.55);
+}
+
+.nabi-flip-panel-dialog {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: min(1100px, 100%);
+  max-height: 92vh;
+  padding: 1.1rem 1.25rem 1.4rem;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: auto;
+}
+
+.nabi-flip-panel-close {
+  align-self: flex-end;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0.15rem;
+  margin: 0 0 0.55rem;
+  line-height: 0;
+  cursor: pointer;
+  opacity: 0.92;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.nabi-flip-panel-close img {
+  display: block;
+  width: clamp(1.85rem, 3.2vw, 2.35rem);
+  height: auto;
+  pointer-events: none;
+}
+
+.nabi-flip-panel-close:hover {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.nabi-flip-panel-slot {
+  width: 100%;
+}
+
+.nabi-flip-panel .nabi-flipbook {
+  padding: 0;
+  max-width: none;
+}
+
+.nabi-flip-panel .nabi-flipbook-stage {
+  max-width: min(52rem, 92vw);
+}
+
+.nabi-flip-panel .nabi-flipbook-nav img {
+  width: clamp(2.8rem, 5vw, 3.8rem);
+}
+
+body.nabi-flip-panel-open {
+  overflow: hidden;
+}
+
+body.custom-cursor-active .nabi-flip-panel,
+body.custom-cursor-active .nabi-flip-panel *,
+body.custom-cursor-active .nabi-flip-panel-close {
+  cursor: none !important;
+}
+
 @media (max-width: 900px) {
   .nabi-flipbook,
   .nabi-flipbook-meta {
@@ -1599,6 +1838,14 @@ body.custom-cursor-active .nabi-flipbook-nav {
 
   .nabi-flipbook-stage {
     max-width: 100%;
+  }
+
+  .nabi-flip-panel {
+    padding: 2vh 2vw;
+  }
+
+  .nabi-flip-panel-dialog {
+    padding: 0.85rem 0.75rem 1.1rem;
   }
 }
 

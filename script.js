@@ -1668,28 +1668,49 @@
   }
 
   function initNabiFlipbook() {
-    const roots = Array.from(document.querySelectorAll('[data-nabi-flipbook]'));
-    if (!roots.length) return;
+    const pageRoots = Array.from(document.querySelectorAll('[data-nabi-flipbook]'));
+    if (!pageRoots.length) return;
 
-    roots.forEach((root) => {
+    const panel = document.getElementById('nabiFlipPanel');
+    const panelSlot = panel?.querySelector('[data-flip-panel-slot]');
+    let panelApi = null;
+    let sourceApi = null;
+
+    function isPanelOpen() {
+      return !!(panel && panel.classList.contains('is-open'));
+    }
+
+    function setArrowTone(root, white) {
+      if (!root) return;
+      root.querySelectorAll('.nabi-flipbook-prev img, .nabi-flipbook-next img').forEach((img) => {
+        const isPrev = img.closest('.nabi-flipbook-prev');
+        img.src = white
+          ? (isPrev ? 'assets/flip-arrow-left-white.png?v=2' : 'assets/flip-arrow-right-white.png?v=2')
+          : (isPrev ? 'assets/flip-arrow-left.png?v=2' : 'assets/flip-arrow-right.png?v=2');
+      });
+    }
+
+    function bindFlipbook(root, options = {}) {
       const book = root.querySelector('[data-flipbook-book]');
       const mode = root.getAttribute('data-flip-mode') || 'cover';
-      const allSheets = Array.from(root.querySelectorAll('.nabi-flipbook-sheet'));
-      const sheets = allSheets.filter((s) => !s.classList.contains('nabi-flipbook-sheet--base'));
+      const sheets = Array.from(root.querySelectorAll('.nabi-flipbook-sheet')).filter(
+        (s) => !s.classList.contains('nabi-flipbook-sheet--base')
+      );
       const prevBtn = root.querySelector('.nabi-flipbook-prev');
       const nextBtn = root.querySelector('.nabi-flipbook-next');
-      const meta = root.parentElement?.querySelector('[data-flipbook-meta]');
-      if (!book || !sheets.length) return;
+      const meta = options.meta
+        ?? root.closest('.nabi-article')?.querySelector('[data-flipbook-meta]');
+      if (!book || !sheets.length) return null;
 
-      let index = 0;
+      let index = options.startIndex || 0;
       let dragging = false;
       let startX = 0;
       let views;
       let turnable;
       let labels;
+      const inPanel = !!options.inPanel;
 
       if (mode === 'spread') {
-        // Last sheet stays on the right; base sheet stays on the left
         turnable = sheets.slice(0, -1);
         views = turnable.length + 1;
         labels = [
@@ -1707,6 +1728,8 @@
         ];
       }
 
+      index = Math.max(0, Math.min(views - 1, index));
+
       function syncSheets() {
         const base = root.querySelector('.nabi-flipbook-sheet--base');
         if (base) {
@@ -1719,6 +1742,8 @@
           const flipped = !isLast && i < index;
           sheet.classList.toggle('is-flipped', flipped);
           sheet.style.zIndex = String(flipped ? i + 2 : sheets.length - i + 3);
+          sheet.style.transform = '';
+          sheet.classList.remove('is-dragging');
         });
 
         book.dataset.view = String(index);
@@ -1731,8 +1756,10 @@
         if (nextBtn) nextBtn.disabled = index >= views - 1;
         if (meta) {
           const label = labels[index] || `${index + 1} / ${views}`;
-          meta.textContent = `${label} — click or drag to flip`;
+          const hint = inPanel ? 'click or drag to flip' : 'click to open · drag to flip';
+          meta.textContent = `${label} — ${hint}`;
         }
+        options.onChange?.(index);
       }
 
       function goTo(next) {
@@ -1754,17 +1781,24 @@
         return null;
       }
 
-      prevBtn?.addEventListener('click', flipPrev);
-      nextBtn?.addEventListener('click', flipNext);
+      function onPrevClick(e) {
+        e.stopPropagation();
+        flipPrev();
+      }
 
-      book.addEventListener('pointerdown', (e) => {
+      function onNextClick(e) {
+        e.stopPropagation();
+        flipNext();
+      }
+
+      function onPointerDown(e) {
         if (e.button !== 0) return;
         dragging = true;
         startX = e.clientX;
         book.setPointerCapture?.(e.pointerId);
-      });
+      }
 
-      book.addEventListener('pointermove', (e) => {
+      function onPointerMove(e) {
         if (!dragging || prefersReducedMotion) return;
         const dx = e.clientX - startX;
         const sheet = sheetForDrag(dx);
@@ -1782,9 +1816,9 @@
           const deg = Math.min(0, -180 + (dx / width) * 180);
           sheet.style.transform = `rotateY(${deg}deg)`;
         }
-      });
+      }
 
-      function endDrag(e) {
+      function onPointerUp(e) {
         if (!dragging) return;
         dragging = false;
         const dx = e.clientX - startX;
@@ -1795,22 +1829,31 @@
           sheet.style.transform = '';
         });
 
-        if (dx < -threshold) flipNext();
-        else if (dx > threshold) flipPrev();
-        else if (Math.abs(dx) < 8) {
+        if (dx < -threshold) {
+          flipNext();
+          return;
+        }
+        if (dx > threshold) {
+          flipPrev();
+          return;
+        }
+
+        if (Math.abs(dx) < 8) {
+          if (!inPanel) {
+            options.onOpenRequest?.();
+            return;
+          }
           const rect = book.getBoundingClientRect();
           const mid = rect.left + rect.width / 2;
           if (e.clientX >= mid) flipNext();
           else flipPrev();
-        } else {
-          updateUI();
+          return;
         }
+
+        updateUI();
       }
 
-      book.addEventListener('pointerup', endDrag);
-      book.addEventListener('pointercancel', endDrag);
-
-      root.addEventListener('keydown', (e) => {
+      function onKeyDown(e) {
         if (e.key === 'ArrowRight') {
           e.preventDefault();
           flipNext();
@@ -1818,10 +1861,86 @@
           e.preventDefault();
           flipPrev();
         }
-      });
+      }
+
+      prevBtn?.addEventListener('click', onPrevClick);
+      nextBtn?.addEventListener('click', onNextClick);
+      book.addEventListener('pointerdown', onPointerDown);
+      book.addEventListener('pointermove', onPointerMove);
+      book.addEventListener('pointerup', onPointerUp);
+      book.addEventListener('pointercancel', onPointerUp);
+      root.addEventListener('keydown', onKeyDown);
       root.tabIndex = 0;
 
       updateUI();
+
+      return {
+        getIndex: () => index,
+        setIndex: (next) => goTo(next),
+        destroy() {
+          prevBtn?.removeEventListener('click', onPrevClick);
+          nextBtn?.removeEventListener('click', onNextClick);
+          book.removeEventListener('pointerdown', onPointerDown);
+          book.removeEventListener('pointermove', onPointerMove);
+          book.removeEventListener('pointerup', onPointerUp);
+          book.removeEventListener('pointercancel', onPointerUp);
+          root.removeEventListener('keydown', onKeyDown);
+        },
+      };
+    }
+
+    function openPanel(api) {
+      if (!panel || !panelSlot || isPanelOpen() || !api?.root) return;
+      const clone = api.root.cloneNode(true);
+      clone.removeAttribute('data-nabi-flipbook');
+      clone.setAttribute('data-nabi-flipbook-clone', '');
+      setArrowTone(clone, true);
+      panelSlot.replaceChildren(clone);
+      sourceApi = api;
+      panelApi = bindFlipbook(clone, {
+        startIndex: api.getIndex(),
+        inPanel: true,
+        meta: null,
+        onChange: (i) => api.setIndex(i),
+      });
+      panel.classList.add('is-open');
+      panel.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('nabi-flip-panel-open');
+      clone.focus?.({ preventScroll: true });
+    }
+
+    function closePanel() {
+      if (!panel || !isPanelOpen()) return;
+      if (panelApi && sourceApi) {
+        sourceApi.setIndex(panelApi.getIndex());
+        panelApi.destroy();
+      }
+      panelSlot?.replaceChildren();
+      panel.classList.remove('is-open');
+      panel.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('nabi-flip-panel-open');
+      panelApi = null;
+      sourceApi = null;
+    }
+
+    panel?.querySelectorAll('[data-flip-panel-close]').forEach((el) => {
+      el.addEventListener('click', closePanel);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isPanelOpen()) {
+        e.preventDefault();
+        closePanel();
+      }
+    });
+
+    pageRoots.forEach((root) => {
+      const api = bindFlipbook(root, {
+        inPanel: false,
+        onOpenRequest: () => openPanel(api),
+      });
+      if (!api) return;
+      api.root = root;
     });
   }
 
