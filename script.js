@@ -1950,12 +1950,353 @@
   initLuagReveal();
   initNabiFlipbook();
   initTricoardFinalLightbox();
+  initFigmaEmbeds();
   initCustomCursor();
+  initUmamiHeroFloaters();
   initResumePreview();
   initIgProfile();
   initIgPost();
   initCaseNav();
 })();
+
+function initUmamiHeroFloaters() {
+  const intro = document.querySelector('.umami-intro');
+  const field = document.querySelector('.umami-hero-floaters');
+  const title = intro && intro.querySelector('.project-title');
+  const index = intro && intro.querySelector('.project-index');
+  if (!intro || !field || !title || !index) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const els = Array.from(field.querySelectorAll('.umami-hero-floater'));
+  if (!els.length) return;
+
+  const GAP = 10;
+  const SAME_GAP = 56;
+  const BASE = 34;
+  let bounds = { left: 0, top: 0, right: 0, bottom: 0, width: 0, height: 0 };
+  let particles = [];
+  let raf = 0;
+  let last = 0;
+  let cursorX = null;
+  let cursorY = null;
+
+  function kindOf(el) {
+    const src = el.getAttribute('src') || '';
+    if (src.includes('cell')) return 'cell';
+    if (src.includes('fiber')) return 'fiber';
+    if (src.includes('link')) return 'link';
+    return src;
+  }
+
+  function measure() {
+    const introRect = intro.getBoundingClientRect();
+    const titleRect = title.getBoundingClientRect();
+    const indexRect = index.getBoundingClientRect();
+    const padRight = Math.max(0, window.innerWidth - introRect.right);
+
+    // Float field: from My Work top to title bottom, starting just past the title
+    bounds.left = titleRect.right - introRect.left + 18;
+    bounds.top = indexRect.top - introRect.top;
+    bounds.right = introRect.width + padRight;
+    bounds.bottom = titleRect.bottom - introRect.top;
+    bounds.width = Math.max(80, bounds.right - bounds.left);
+    bounds.height = Math.max(40, bounds.bottom - bounds.top);
+
+    field.style.left = `${bounds.left}px`;
+    field.style.top = `${bounds.top}px`;
+    field.style.width = `${bounds.width}px`;
+    field.style.height = `${bounds.height}px`;
+    field.style.right = 'auto';
+  }
+
+  function sizeFor(el) {
+    const scale = Number(el.getAttribute('data-size') || '0.7');
+    return Math.max(14, BASE * scale);
+  }
+
+  function pairGap(a, b) {
+    return a.kind === b.kind ? SAME_GAP : GAP;
+  }
+
+  function overlaps(a, b, pad) {
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+    const min = a.r + b.r + pad;
+    return dx * dx + dy * dy < min * min;
+  }
+
+  function placeWithoutOverlap(p, others) {
+    let best = null;
+    let bestScore = -Infinity;
+    for (let attempt = 0; attempt < 80; attempt += 1) {
+      const x = p.r + Math.random() * Math.max(1, bounds.width - p.r * 2);
+      const y = p.r + Math.random() * Math.max(1, bounds.height - p.r * 2);
+      const trial = { x, y, r: p.r, kind: p.kind };
+      if (others.some((o) => overlaps(trial, o, pairGap(trial, o)))) continue;
+      // Prefer spots where nearest neighbor is a different kind
+      let nearest = Infinity;
+      let nearestKind = null;
+      others.forEach((o) => {
+        const d = Math.hypot(x - o.x, y - o.y);
+        if (d < nearest) {
+          nearest = d;
+          nearestKind = o.kind;
+        }
+      });
+      const score = nearestKind === p.kind ? nearest - 200 : nearest;
+      if (score > bestScore) {
+        bestScore = score;
+        best = { x, y };
+      }
+      if (nearestKind && nearestKind !== p.kind && nearest > p.r * 2 + SAME_GAP) {
+        p.x = x;
+        p.y = y;
+        return;
+      }
+    }
+    if (best) {
+      p.x = best.x;
+      p.y = best.y;
+    }
+  }
+
+  function initParticles() {
+    particles = els.map((el) => {
+      const h = sizeFor(el);
+      el.style.maxHeight = `${h}px`;
+      el.style.width = 'auto';
+      const w = el.getBoundingClientRect().width || h;
+      const r = Math.max(w, h) / 2 + 2;
+      const speed = 8 + Math.random() * 10;
+      const angle = Math.random() * Math.PI * 2;
+      return {
+        el,
+        kind: kindOf(el),
+        r,
+        x: r,
+        y: r,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        rot: (Math.random() - 0.5) * 20,
+        spin: (Math.random() - 0.5) * 8,
+        magX: 0,
+        magY: 0,
+      };
+    });
+
+    particles.forEach((p, i) => {
+      placeWithoutOverlap(p, particles.slice(0, i));
+      p.el.style.transform = `translate(${p.x - p.r}px, ${p.y - p.r}px) rotate(${p.rot}deg)`;
+    });
+  }
+
+  function separate() {
+    for (let i = 0; i < particles.length; i += 1) {
+      for (let j = i + 1; j < particles.length; j += 1) {
+        const a = particles[i];
+        const b = particles[j];
+        let dx = b.x - a.x;
+        let dy = b.y - a.y;
+        let dist = Math.hypot(dx, dy) || 0.001;
+        const min = a.r + b.r + pairGap(a, b);
+        if (dist < min) {
+          const push = (min - dist) / 2;
+          dx /= dist;
+          dy /= dist;
+          a.x -= dx * push;
+          a.y -= dy * push;
+          b.x += dx * push;
+          b.y += dy * push;
+          const bounce = a.kind === b.kind ? 0.55 : 0.35;
+          const nx = dx;
+          const ny = dy;
+          const av = a.vx * nx + a.vy * ny;
+          const bv = b.vx * nx + b.vy * ny;
+          a.vx += (bv - av) * bounce * nx;
+          a.vy += (bv - av) * bounce * ny;
+          b.vx += (av - bv) * bounce * nx;
+          b.vy += (av - bv) * bounce * ny;
+        }
+      }
+    }
+  }
+
+  function unstickSameNeighbors() {
+    particles.forEach((p, i) => {
+      let nearest = null;
+      let nearestDist = Infinity;
+      particles.forEach((o, j) => {
+        if (i === j) return;
+        const d = Math.hypot(p.x - o.x, p.y - o.y);
+        if (d < nearestDist) {
+          nearestDist = d;
+          nearest = o;
+        }
+      });
+      if (!nearest || nearest.kind !== p.kind) return;
+      // Nearest neighbor is same icon — push away hard
+      let dx = p.x - nearest.x;
+      let dy = p.y - nearest.y;
+      const dist = Math.hypot(dx, dy) || 0.001;
+      dx /= dist;
+      dy /= dist;
+      const push = 28;
+      p.vx += dx * push * 0.08;
+      p.vy += dy * push * 0.08;
+      nearest.vx -= dx * push * 0.08;
+      nearest.vy -= dy * push * 0.08;
+      p.x += dx * 1.2;
+      p.y += dy * 1.2;
+      nearest.x -= dx * 1.2;
+      nearest.y -= dy * 1.2;
+    });
+  }
+
+  function tick(now) {
+    const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
+    last = now;
+    const fieldRect = field.getBoundingClientRect();
+
+    particles.forEach((p, index) => {
+      // gentle random steering
+      p.vx += (Math.random() - 0.5) * 18 * dt;
+      p.vy += (Math.random() - 0.5) * 18 * dt;
+
+      // Cursor magnetic (same formula as site blocks / hero words)
+      if (cursorX != null && cursorY != null) {
+        const cx = fieldRect.left + p.x;
+        const cy = fieldRect.top + p.y;
+        const dx = cx - cursorX;
+        const dy = cy - cursorY;
+        const distance = Math.hypot(dx, dy);
+        const radius = Math.max(p.r * 2, 24) * 4.2;
+        if (distance < radius && distance > 0) {
+          const force = Math.pow(1 - distance / radius, 1.35);
+          const strengthX = 18 + (index % 2) * 4;
+          const strengthY = 14;
+          const nx = dx / distance;
+          const ny = dy / distance;
+          p.magX = nx * force * strengthX * 1.35;
+          p.magY = ny * force * strengthY * 1.35;
+          p.vx += nx * force * 70 * dt;
+          p.vy += ny * force * 70 * dt;
+        } else {
+          p.magX *= 0.82;
+          p.magY *= 0.82;
+          if (Math.abs(p.magX) < 0.05) p.magX = 0;
+          if (Math.abs(p.magY) < 0.05) p.magY = 0;
+        }
+      } else {
+        p.magX *= 0.82;
+        p.magY *= 0.82;
+      }
+
+      const speed = Math.hypot(p.vx, p.vy);
+      const max = 28;
+      const min = 6;
+      if (speed > max) {
+        p.vx = (p.vx / speed) * max;
+        p.vy = (p.vy / speed) * max;
+      } else if (speed < min && speed > 0) {
+        p.vx = (p.vx / speed) * min;
+        p.vy = (p.vy / speed) * min;
+      }
+
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.rot += p.spin * dt;
+
+      if (p.x < p.r) {
+        p.x = p.r;
+        p.vx = Math.abs(p.vx);
+      } else if (p.x > bounds.width - p.r) {
+        p.x = bounds.width - p.r;
+        p.vx = -Math.abs(p.vx);
+      }
+      if (p.y < p.r) {
+        p.y = p.r;
+        p.vy = Math.abs(p.vy);
+      } else if (p.y > bounds.height - p.r) {
+        p.y = bounds.height - p.r;
+        p.vy = -Math.abs(p.vy);
+      }
+    });
+
+    separate();
+    separate();
+    unstickSameNeighbors();
+    separate();
+
+    particles.forEach((p) => {
+      p.x = Math.min(bounds.width - p.r, Math.max(p.r, p.x));
+      p.y = Math.min(bounds.height - p.r, Math.max(p.r, p.y));
+      p.el.style.transform = `translate(${p.x - p.r + p.magX}px, ${p.y - p.r + p.magY}px) rotate(${p.rot}deg)`;
+    });
+
+    raf = requestAnimationFrame(tick);
+  }
+
+  function start() {
+    measure();
+    const ready = els.map(
+      (el) =>
+        el.complete
+          ? Promise.resolve()
+          : new Promise((resolve) => {
+              el.addEventListener('load', resolve, { once: true });
+              el.addEventListener('error', resolve, { once: true });
+            })
+    );
+    Promise.all(ready).then(() => {
+      requestAnimationFrame(() => {
+        els.forEach((el) => {
+          const h = sizeFor(el);
+          el.style.maxHeight = `${h}px`;
+        });
+        measure();
+        initParticles();
+        cancelAnimationFrame(raf);
+        last = performance.now();
+        raf = requestAnimationFrame(tick);
+      });
+    });
+  }
+
+  start();
+  window.addEventListener(
+    'mousemove',
+    (e) => {
+      cursorX = e.clientX;
+      cursorY = e.clientY;
+    },
+    { passive: true }
+  );
+  document.documentElement.addEventListener('mouseleave', () => {
+    cursorX = null;
+    cursorY = null;
+  });
+  window.addEventListener('resize', () => {
+    measure();
+    particles.forEach((p, i) => {
+      p.x = Math.min(bounds.width - p.r, Math.max(p.r, p.x));
+      p.y = Math.min(bounds.height - p.r, Math.max(p.r, p.y));
+      if (particles.slice(0, i).some((o) => overlaps(p, o, pairGap(p, o)))) {
+        placeWithoutOverlap(p, particles.slice(0, i));
+      }
+    });
+  });
+}
+
+function initFigmaEmbeds() {
+  document.querySelectorAll('.umami-figma-embed').forEach((wrap) => {
+    wrap.addEventListener('click', () => {
+      wrap.classList.add('is-live');
+    });
+    wrap.addEventListener('mouseleave', () => {
+      wrap.classList.remove('is-live');
+    });
+  });
+}
 
 function initTricoardFinalLightbox() {
   const row = document.querySelector('[data-tricoard-final]');
