@@ -1667,10 +1667,169 @@
     targets.forEach((el) => io.observe(el));
   }
 
+  function initNabiFlipbook() {
+    const roots = Array.from(document.querySelectorAll('[data-nabi-flipbook]'));
+    if (!roots.length) return;
+
+    roots.forEach((root) => {
+      const book = root.querySelector('[data-flipbook-book]');
+      const mode = root.getAttribute('data-flip-mode') || 'cover';
+      const allSheets = Array.from(root.querySelectorAll('.nabi-flipbook-sheet'));
+      const sheets = allSheets.filter((s) => !s.classList.contains('nabi-flipbook-sheet--base'));
+      const prevBtn = root.querySelector('.nabi-flipbook-prev');
+      const nextBtn = root.querySelector('.nabi-flipbook-next');
+      const meta = root.parentElement?.querySelector('[data-flipbook-meta]');
+      if (!book || !sheets.length) return;
+
+      let index = 0;
+      let dragging = false;
+      let startX = 0;
+      let views;
+      let turnable;
+      let labels;
+
+      if (mode === 'spread') {
+        // Last sheet stays on the right; base sheet stays on the left
+        turnable = sheets.slice(0, -1);
+        views = turnable.length + 1;
+        labels = [
+          '1 / 3 — pages 1–2',
+          '2 / 3 — pages 3–4',
+          '3 / 3 — pages 5–6',
+        ];
+      } else {
+        turnable = sheets;
+        views = sheets.length + 1;
+        labels = [
+          '1 / 3 — cover',
+          '2 / 3 — pages 2–3',
+          '3 / 3 — last page',
+        ];
+      }
+
+      function syncSheets() {
+        const base = root.querySelector('.nabi-flipbook-sheet--base');
+        if (base) {
+          base.classList.add('is-flipped');
+          base.style.zIndex = '1';
+        }
+
+        sheets.forEach((sheet, i) => {
+          const isLast = mode === 'spread' && i === sheets.length - 1;
+          const flipped = !isLast && i < index;
+          sheet.classList.toggle('is-flipped', flipped);
+          sheet.style.zIndex = String(flipped ? i + 2 : sheets.length - i + 3);
+        });
+
+        book.dataset.view = String(index);
+        book.dataset.mode = mode;
+      }
+
+      function updateUI() {
+        syncSheets();
+        if (prevBtn) prevBtn.disabled = index <= 0;
+        if (nextBtn) nextBtn.disabled = index >= views - 1;
+        if (meta) {
+          const label = labels[index] || `${index + 1} / ${views}`;
+          meta.textContent = `${label} — click or drag to flip`;
+        }
+      }
+
+      function goTo(next) {
+        index = Math.max(0, Math.min(views - 1, next));
+        updateUI();
+      }
+
+      function flipNext() {
+        if (index < views - 1) goTo(index + 1);
+      }
+
+      function flipPrev() {
+        if (index > 0) goTo(index - 1);
+      }
+
+      function sheetForDrag(dx) {
+        if (dx < 0 && index < views - 1) return turnable[index] || null;
+        if (dx > 0 && index > 0) return turnable[index - 1] || null;
+        return null;
+      }
+
+      prevBtn?.addEventListener('click', flipPrev);
+      nextBtn?.addEventListener('click', flipNext);
+
+      book.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
+        dragging = true;
+        startX = e.clientX;
+        book.setPointerCapture?.(e.pointerId);
+      });
+
+      book.addEventListener('pointermove', (e) => {
+        if (!dragging || prefersReducedMotion) return;
+        const dx = e.clientX - startX;
+        const sheet = sheetForDrag(dx);
+        sheets.forEach((s) => {
+          s.classList.remove('is-dragging');
+          s.style.transform = '';
+        });
+        if (!sheet) return;
+        const width = (book.clientWidth || 1) * 0.5;
+        sheet.classList.add('is-dragging');
+        if (dx < 0) {
+          const deg = Math.max(-180, (dx / width) * 180);
+          sheet.style.transform = `rotateY(${deg}deg)`;
+        } else {
+          const deg = Math.min(0, -180 + (dx / width) * 180);
+          sheet.style.transform = `rotateY(${deg}deg)`;
+        }
+      });
+
+      function endDrag(e) {
+        if (!dragging) return;
+        dragging = false;
+        const dx = e.clientX - startX;
+        const threshold = Math.min(70, (book.clientWidth || 320) * 0.12);
+
+        sheets.forEach((sheet) => {
+          sheet.classList.remove('is-dragging');
+          sheet.style.transform = '';
+        });
+
+        if (dx < -threshold) flipNext();
+        else if (dx > threshold) flipPrev();
+        else if (Math.abs(dx) < 8) {
+          const rect = book.getBoundingClientRect();
+          const mid = rect.left + rect.width / 2;
+          if (e.clientX >= mid) flipNext();
+          else flipPrev();
+        } else {
+          updateUI();
+        }
+      }
+
+      book.addEventListener('pointerup', endDrag);
+      book.addEventListener('pointercancel', endDrag);
+
+      root.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          flipNext();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          flipPrev();
+        }
+      });
+      root.tabIndex = 0;
+
+      updateUI();
+    });
+  }
+
   initPhotoCarousel();
   initPhotoLightbox();
   initUmamiFlavorCarousel();
   initLuagReveal();
+  initNabiFlipbook();
   initCustomCursor();
   initResumePreview();
   initIgProfile();

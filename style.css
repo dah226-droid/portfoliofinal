@@ -58,8 +58,12 @@ body.custom-cursor-active {
 body.custom-cursor-active a,
 body.custom-cursor-active button,
 body.custom-cursor-active .site-nav,
-body.custom-cursor-active .site-nav-link {
-  cursor: none;
+body.custom-cursor-active .site-nav-link,
+body.custom-cursor-active .nabi-flipbook,
+body.custom-cursor-active .nabi-flipbook *,
+body.custom-cursor-active .nabi-flipbook-sheet,
+body.custom-cursor-active .nabi-flipbook-nav {
+  cursor: none !important;
 }
 
 .custom-cursor {
@@ -1411,8 +1415,198 @@ body.custom-cursor-active .site-nav-link {
   gap: 3.9rem;
 }
 
-.luag-hero-stage--umami .luag-hero-copy {
-  margin-left: 0;
+.nabi-article {
+  width: 100%;
+  margin: 0 0 4rem;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.nabi-article-title {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.6rem, 3vw, 2.35rem);
+  font-weight: 400;
+  color: var(--purple);
+  text-align: left;
+}
+
+.nabi-flipbook {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  padding: 0 5cm;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.nabi-flipbook-stage {
+  position: relative;
+  width: 100%;
+  max-width: 46rem;
+  margin: 0 auto;
+  perspective: 2400px;
+  overflow: visible;
+}
+
+.nabi-flipbook-book {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2520 / 1620;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+.nabi-flipbook-book[data-mode="spread"] {
+  transform: translateX(0);
+}
+
+/* Cover mode: center on single page or spine */
+.nabi-flipbook-book[data-mode="cover"][data-view="0"] {
+  transform: translateX(-25%);
+}
+
+.nabi-flipbook-book[data-mode="cover"][data-view="1"] {
+  transform: translateX(0);
+}
+
+.nabi-flipbook-book[data-mode="cover"][data-view="2"] {
+  transform: translateX(25%);
+}
+
+/* Each sheet lives on the right half; spine = center of the book */
+.nabi-flipbook-sheet {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+  cursor: grab;
+}
+
+.nabi-flipbook-sheet--base {
+  cursor: default;
+  pointer-events: none;
+}
+
+.nabi-flipbook-sheet.is-dragging {
+  transition: none;
+  cursor: grabbing;
+}
+
+.nabi-flipbook-sheet.is-flipped {
+  transform: rotateY(-180deg);
+}
+
+.nabi-flipbook-side {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: #f7f3ea;
+  box-shadow: 0 10px 28px rgba(44, 24, 16, 0.12);
+}
+
+.nabi-flipbook-side--front {
+  border-radius: 0.12em 0.55em 0.65em 0.1em / 0.3em 0.45em 0.22em 0.4em;
+}
+
+.nabi-flipbook-side--back {
+  transform: rotateY(180deg);
+  border-radius: 0.55em 0.12em 0.1em 0.65em / 0.45em 0.3em 0.4em 0.22em;
+}
+
+.nabi-flipbook-side:empty {
+  background: transparent;
+  box-shadow: none;
+}
+
+.nabi-flipbook-side img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.nabi-flipbook-book::before {
+  content: "";
+  position: absolute;
+  top: 3%;
+  bottom: 3%;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: rgba(44, 24, 16, 0.12);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.nabi-flipbook-book[data-mode="cover"][data-view="0"]::before,
+.nabi-flipbook-book[data-mode="cover"][data-view="2"]::before {
+  opacity: 0;
+}
+
+.nabi-flipbook-nav {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0.35rem 0.2rem;
+  cursor: pointer;
+  opacity: 0.92;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  line-height: 0;
+}
+
+.nabi-flipbook-nav img {
+  display: block;
+  width: clamp(2.4rem, 4.5vw, 3.35rem);
+  height: auto;
+  pointer-events: none;
+}
+
+.nabi-flipbook-nav:hover:not(:disabled) {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.nabi-flipbook-nav:disabled {
+  opacity: 0.28;
+  cursor: default;
+}
+
+.nabi-flipbook-meta {
+  margin: 0.9rem 0 0;
+  padding: 0 5cm;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 0.92rem;
+  opacity: 0.72;
+}
+
+@media (max-width: 900px) {
+  .nabi-flipbook,
+  .nabi-flipbook-meta {
+    padding: 0 1.25rem;
+  }
+
+  .nabi-flipbook-stage {
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nabi-flipbook-sheet,
+  .nabi-flipbook-book {
+    transition: none;
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
