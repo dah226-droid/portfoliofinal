@@ -1262,6 +1262,47 @@ body.custom-cursor-active .nabi-pdf-link {
   margin-bottom: 1.35rem;
 }
 
+.luag-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  width: 100%;
+  margin: 0 0 1.35rem;
+}
+
+.luag-title-row .project-title {
+  margin-bottom: 0;
+  flex: 1 1 auto;
+}
+
+.luag-title-compass {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(calc(2.8rem * 1.1), calc(5vw * 1.1), calc(4rem * 1.1));
+  aspect-ratio: 362 / 447;
+  margin-left: auto;
+  transform: translateY(-0.4cm);
+  user-select: none;
+  pointer-events: none;
+}
+
+.luag-title-compass-ring,
+.luag-title-compass-needle {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.luag-title-compass-needle {
+  transform-origin: 49.8% 57.1%;
+  will-change: transform;
+  transition: transform 0.08s linear;
+}
+
 .luag-hero-stage {
   display: grid;
   grid-template-columns: minmax(0, 1.65fr) minmax(12rem, 0.9fr);
@@ -1395,6 +1436,24 @@ body.custom-cursor-active .nabi-pdf-link {
 
 .luag-hero-stage--lastcall .luag-hero-copy {
   margin-left: -2.75rem;
+}
+
+.lastcall-overview {
+  width: 100%;
+  margin: 0 0 2.5rem;
+  padding-bottom: 3.25rem;
+  border-bottom: 3px solid #cfcfcf;
+}
+
+.lastcall-overview-body.project-body {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.lastcall-overview-body p {
+  margin: 0;
+  color: var(--ink);
 }
 
 .luag-hero-panel--umami {
@@ -2472,7 +2531,80 @@ body.custom-cursor-active .nabi-flip-panel-close {
 }
 
 .project-index-tag--black {
-  color: var(--ink);
+  color: #000;
+}
+
+.luag-digital-label {
+  margin-top: calc(0.35rem + 0.7cm);
+  color: #000;
+}
+
+.luag-em,
+.umami-em,
+.nabi-em,
+.tricoard-em {
+  color: #000;
+  font-weight: 700;
+}
+
+.luag-digital-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 2cm;
+  width: 100%;
+  margin: 1rem 0 0;
+}
+
+.luag-digital-row {
+  display: flex;
+  align-items: start;
+  gap: 0.45rem;
+  flex: 0 0 auto;
+  width: auto;
+  margin: 0;
+}
+
+.luag-digital-work,
+.luag-digital-map {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 1em 0.35em 1.4em 0.55em / 0.9em 1.1em 0.45em 1.2em;
+}
+
+.luag-digital-work {
+  flex: 0 0 auto;
+  width: 19.8rem;
+}
+
+.luag-digital-map {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.luag-digital-work img,
+.luag-digital-map img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.luag-digital-map img {
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  object-position: left top;
+}
+
+.luag-digital-copy {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 12rem;
+  max-width: none;
+  margin: 0;
+}
+
+.luag-digital-copy p {
+  margin: 0;
 }
 
 .luag-intro-top {
@@ -3101,9 +3233,23 @@ body:has(.umami-page-doodle) .to-top {
 }
 
 .luag-signage-pin {
+  position: relative;
   margin: 0 0 3.5rem;
-  padding-bottom: 3cm;
+  padding-bottom: 1.8cm;
   border-bottom: 3px solid #cfcfcf;
+}
+
+.luag-signage-stroke-icon {
+  position: absolute;
+  left: auto;
+  right: 0;
+  bottom: calc(-0.12rem - 0.12cm);
+  width: clamp(calc(2.4rem * 1.3 * 1.8), calc(4.5vw * 1.3 * 1.8), calc(3.4rem * 1.3 * 1.8));
+  height: auto;
+  transform: translateY(0);
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
 }
 
 .luag-signage-stage {
@@ -4614,6 +4760,20 @@ body:has(.umami-page-doodle) .to-top {
   .umami-progress-row {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+
+  .luag-digital-layout {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .luag-digital-row {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .luag-digital-work {
+    width: min(18rem, 32vw);
   }
 
   .umami-flavor-grid {

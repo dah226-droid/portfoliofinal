@@ -1953,11 +1953,66 @@
   initFigmaEmbeds();
   initCustomCursor();
   initUmamiHeroFloaters();
+  initLuagCompass();
+  initLuagDigitalHeights();
   initResumePreview();
   initIgProfile();
   initIgPost();
   initCaseNav();
 })();
+
+function initLuagDigitalHeights() {
+  const work = document.querySelector('.luag-digital-work img');
+  const map = document.querySelector('.luag-digital-map img');
+  if (!work || !map) return;
+
+  function sync() {
+    const h = work.getBoundingClientRect().height;
+    if (!h) return;
+    map.style.height = `${h}px`;
+    map.style.width = 'auto';
+    map.style.maxWidth = 'none';
+  }
+
+  const ready = work.complete
+    ? Promise.resolve()
+    : new Promise((resolve) => {
+        work.addEventListener('load', resolve, { once: true });
+        work.addEventListener('error', resolve, { once: true });
+      });
+
+  ready.then(() => {
+    sync();
+    if (typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(sync).observe(work);
+    }
+  });
+  window.addEventListener('resize', sync);
+}
+
+function initLuagCompass() {
+  const compass = document.querySelector('[data-luag-compass]');
+  const needle = compass && compass.querySelector('.luag-title-compass-needle');
+  if (!compass || !needle) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+
+  function pointAt(clientX, clientY) {
+    const rect = compass.getBoundingClientRect();
+    const px = rect.left + rect.width * 0.498;
+    const py = rect.top + rect.height * 0.571;
+    const angle = (Math.atan2(clientY - py, clientX - px) * 180) / Math.PI + 90;
+    needle.style.transform = `rotate(${angle}deg)`;
+  }
+
+  window.addEventListener(
+    'mousemove',
+    (e) => {
+      pointAt(e.clientX, e.clientY);
+    },
+    { passive: true }
+  );
+}
 
 function initUmamiHeroFloaters() {
   const intro = document.querySelector('.umami-intro');
