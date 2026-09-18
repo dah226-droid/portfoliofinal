@@ -2343,7 +2343,7 @@ function initUmamiHeroFloaters() {
 }
 
 function initFigmaEmbeds() {
-  document.querySelectorAll('.umami-figma-embed').forEach((wrap) => {
+  document.querySelectorAll('.umami-figma-embed, .lastcall-figma-embed').forEach((wrap) => {
     wrap.addEventListener('click', () => {
       wrap.classList.add('is-live');
     });
