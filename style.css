@@ -1399,6 +1399,132 @@ body.custom-cursor-active .luag-medium-link {
   }
 }
 
+.dayul-overview .project-subhead {
+  margin: 0 0 1.25rem;
+}
+
+.dayul-overview-row {
+  --dayul-overview-h: clamp(16.8rem, 43.2vw, 28.8rem);
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(0.85rem, 2vw, 1.35rem);
+  width: 100%;
+  margin: 0;
+}
+
+.dayul-overview-media {
+  margin: 0;
+  overflow: hidden;
+  flex: 0 1 auto;
+  background: transparent;
+  border-radius: 1em 0.35em 1.4em 0.55em / 0.9em 1.1em 0.45em 1.2em;
+}
+
+.dayul-overview-media--portrait {
+  height: var(--dayul-overview-h);
+  border-radius: 0.4em 1.2em 0.5em 1.1em / 1.05em 0.45em 1.15em 0.5em;
+}
+
+.dayul-overview-media img {
+  display: block;
+  height: var(--dayul-overview-h);
+  width: auto;
+  max-width: none;
+  transform-origin: center center;
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.dayul-overview-media--portrait img {
+  height: calc(var(--dayul-overview-h) + 2cm);
+  margin-top: -1cm;
+}
+
+.dayul-overview-copy {
+  flex: 1 1 0;
+  min-width: 12rem;
+  margin: 0;
+  max-width: none;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(var(--dayul-overview-h) + 0.5cm);
+}
+
+.dayul-overview-copy p {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(0.92rem, 1.35vw, 1.02rem);
+  line-height: 1.65;
+}
+
+.dayul-overview-location {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+  line-height: 1.35;
+}
+
+.dayul-overview-copy p.dayul-overview-location {
+  margin-top: auto;
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.dayul-overview-location span {
+  font-size: 0.7rem;
+  line-height: 1.35;
+  margin-top: 0.2cm;
+}
+
+.dayul-overview-pin {
+  display: block;
+  width: 1.3rem;
+  height: auto;
+  flex: 0 0 auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dayul-overview-media:hover img {
+    transform: scale(1.06);
+  }
+}
+
+@media (max-width: 900px) {
+  .dayul-overview-row {
+    flex-wrap: wrap;
+  }
+
+  .dayul-overview-copy {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .dayul-overview-row {
+    flex-direction: column;
+  }
+
+  .dayul-overview-media--portrait {
+    height: auto;
+  }
+
+  .dayul-overview-media img,
+  .dayul-overview-media--portrait img {
+    width: 100%;
+    height: auto;
+    margin-top: 0;
+  }
+}
+
+.dayul-logos .project-subhead,
+.dayul-cup .project-subhead,
+.dayul-merch .project-subhead,
+.dayul-other .project-subhead,
+.dayul-planning .project-subhead {
+  margin: 0 0 1.25rem;
+}
+
 .luag-hero-panel--nabi {
   overflow: hidden;
 }
