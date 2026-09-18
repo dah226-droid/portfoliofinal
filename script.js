@@ -1949,12 +1949,85 @@
   initUmamiFlavorCarousel();
   initLuagReveal();
   initNabiFlipbook();
+  initTricoardFinalLightbox();
   initCustomCursor();
   initResumePreview();
   initIgProfile();
   initIgPost();
   initCaseNav();
 })();
+
+function initTricoardFinalLightbox() {
+  const row = document.querySelector('[data-tricoard-final]');
+  const panel = document.getElementById('tricoardFinalPanel');
+  const panelImg = document.getElementById('tricoardFinalImage');
+  const prevBtn = document.getElementById('tricoardFinalPrev');
+  const nextBtn = document.getElementById('tricoardFinalNext');
+  if (!row || !panel || !panelImg) return;
+
+  const triggers = Array.from(row.querySelectorAll('[data-tricoard-final-open]'));
+  let index = 0;
+  let lastTrigger = null;
+
+  function showAt(i) {
+    if (!triggers.length) return;
+    index = (i + triggers.length) % triggers.length;
+    const button = triggers[index];
+    const img = button.querySelector('img');
+    if (!img) return;
+    panelImg.src = img.currentSrc || img.src;
+    panelImg.alt = img.alt || '';
+    lastTrigger = button;
+  }
+
+  function openAt(i) {
+    showAt(i);
+    panel.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    if (!panel.classList.contains('is-open')) return;
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastTrigger) lastTrigger.focus();
+  }
+
+  row.addEventListener('click', (e) => {
+    const button = e.target.closest('[data-tricoard-final-open]');
+    if (!button) return;
+    const i = Number(button.getAttribute('data-tricoard-final-open') || '0');
+    openAt(Number.isFinite(i) ? i : 0);
+  });
+
+  prevBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showAt(index - 1);
+  });
+  nextBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showAt(index + 1);
+  });
+
+  panel.addEventListener('click', (e) => {
+    if (e.target.closest('[data-tricoard-final-close]')) close();
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (!panel.classList.contains('is-open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      showAt(index - 1);
+    }
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      showAt(index + 1);
+    }
+  });
+}
 
 function initCaseNav() {
   const nav = document.getElementById('caseNav');
