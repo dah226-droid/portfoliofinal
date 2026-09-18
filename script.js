@@ -1513,8 +1513,164 @@
     }
   }
 
+  function initUmamiFlavorCarousel() {
+    const pin = document.getElementById('umamiFlavorPin');
+    const carousel = document.getElementById('umamiFlavorCarousel');
+    const track = document.getElementById('umamiFlavorTrack');
+    if (!pin || !carousel || !track) return;
+
+    if (prefersReducedMotion) {
+      carousel.style.overflowX = 'auto';
+      return;
+    }
+
+    let progress = 0;
+    let extra = 0;
+    let lockY = null;
+    let capturing = false;
+
+    function overflow() {
+      return Math.max(0, track.scrollWidth - carousel.clientWidth);
+    }
+
+    function stickyTopPx() {
+      const gapCm = 37.7952755906;
+      const baseH = Math.max(carousel.offsetHeight, 1);
+      return Math.max(0, window.innerHeight - baseH - gapCm);
+    }
+
+    function layout() {
+      carousel.style.top = `${stickyTopPx()}px`;
+      extra = overflow();
+      if (!capturing) pin.style.height = '';
+      apply();
+    }
+
+    function apply() {
+      extra = overflow();
+      track.style.transform = `translate3d(${(-extra * progress).toFixed(2)}px,0,0)`;
+    }
+
+    function startCapture() {
+      if (capturing) return;
+      const rect = carousel.getBoundingClientRect();
+      capturing = true;
+      lockY = window.scrollY;
+      pin.style.height = `${rect.height}px`;
+      carousel.style.position = 'fixed';
+      carousel.style.left = `${rect.left}px`;
+      carousel.style.width = `${rect.width}px`;
+      carousel.style.top = `${rect.top}px`;
+      carousel.style.right = 'auto';
+      carousel.style.zIndex = '5';
+    }
+
+    function endCapture() {
+      if (!capturing) return;
+      capturing = false;
+      lockY = null;
+      carousel.style.position = '';
+      carousel.style.left = '';
+      carousel.style.width = '';
+      carousel.style.right = '';
+      carousel.style.zIndex = '';
+      carousel.style.top = `${stickyTopPx()}px`;
+      pin.style.height = '';
+    }
+
+    function isReadyToCapture() {
+      const top = stickyTopPx();
+      const pinTop = pin.getBoundingClientRect().top;
+      return pinTop <= top + 2;
+    }
+
+    function onWheel(e) {
+      extra = overflow();
+      if (extra <= 0) return;
+
+      const down = e.deltaY > 0;
+      const up = e.deltaY < 0;
+
+      if (!capturing) {
+        if (!(isReadyToCapture() && ((down && progress < 1) || (up && progress > 0)))) {
+          return;
+        }
+        startCapture();
+      }
+
+      if (down && progress >= 1) {
+        endCapture();
+        return;
+      }
+      if (up && progress <= 0) {
+        endCapture();
+        return;
+      }
+
+      e.preventDefault();
+      progress = Math.min(1, Math.max(0, progress + e.deltaY / extra));
+      apply();
+      if (lockY !== null) window.scrollTo(0, lockY);
+    }
+
+    function onScroll() {
+      if (!capturing || lockY === null) return;
+      if (Math.abs(window.scrollY - lockY) > 0.5) {
+        window.scrollTo(0, lockY);
+      }
+    }
+
+    function onResize() {
+      if (capturing) endCapture();
+      layout();
+    }
+
+    Array.from(track.querySelectorAll('img')).forEach((img) => {
+      if (img.complete) return;
+      img.addEventListener('load', onResize, { once: true });
+      img.addEventListener('error', onResize, { once: true });
+    });
+
+    layout();
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('scroll', onScroll, { passive: false });
+    window.addEventListener('resize', onResize);
+    if (typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(onResize).observe(track);
+    }
+  }
+
+  function initLuagReveal() {
+    const targets = Array.from(document.querySelectorAll('.luag-reveal, .luag-hero-copy'));
+    if (!targets.length) return;
+
+    if (prefersReducedMotion) {
+      targets.forEach((el) => el.classList.add('is-in'));
+      return;
+    }
+
+    if (typeof IntersectionObserver === 'undefined') {
+      targets.forEach((el) => el.classList.add('is-in'));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-in');
+          io.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.2 }
+    );
+    targets.forEach((el) => io.observe(el));
+  }
+
   initPhotoCarousel();
   initPhotoLightbox();
+  initUmamiFlavorCarousel();
+  initLuagReveal();
   initCustomCursor();
   initResumePreview();
   initIgProfile();
