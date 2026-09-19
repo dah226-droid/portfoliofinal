@@ -1525,6 +1525,862 @@ body.custom-cursor-active .luag-medium-link {
   margin: 0 0 1.25rem;
 }
 
+.dayul-planning {
+  margin-top: 0.5cm;
+}
+
+.dayul-logos-intro.project-body,
+.dayul-planning-intro.project-body {
+  width: 100%;
+  max-width: none;
+  margin: 0 0 2rem;
+}
+
+.dayul-logos-intro p,
+.dayul-planning-intro p {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(0.92rem, 1.35vw, 1.02rem);
+  line-height: 1.65;
+}
+
+.dayul-logos-split {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: calc(1.5rem + 1cm);
+  width: 100%;
+}
+
+.dayul-logos-split::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: #cfcfcf;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.dayul-logos-col {
+  min-width: 0;
+}
+
+.dayul-logos-side-title {
+  margin: 0 0 1.25rem;
+  color: var(--ink);
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.dayul-logos-media-stack {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 1rem;
+  width: 100%;
+}
+
+.dayul-logos-media {
+  margin: 0;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: visible;
+}
+
+.dayul-logos-media img {
+  display: block;
+  width: 100%;
+  height: clamp(11rem, 24vw, 15rem);
+  object-fit: contain;
+  object-position: center;
+  mix-blend-mode: multiply;
+  border-radius: 0.85em 0.3em 1.1em 0.4em / 0.7em 0.95em 0.35em 0.9em;
+}
+
+.dayul-logos-caption {
+  margin: 0.55rem 0 0;
+  color: var(--ink);
+  font-size: clamp(0.78rem, 1.1vw, 0.88rem);
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.dayul-logos-col--left .dayul-logos-media:nth-child(1) img {
+  transform: scale(0.82);
+  transform-origin: center center;
+}
+
+.dayul-logos-col--left .dayul-logos-media:nth-child(2) img {
+  transform: scale(0.902);
+  transform-origin: center center;
+}
+
+.dayul-logos-col--right .dayul-logos-media:nth-child(2) {
+  margin-top: -0.4cm;
+}
+
+@media (max-width: 700px) {
+  .dayul-logos-split {
+    grid-template-columns: 1fr;
+    row-gap: 1.5rem;
+    column-gap: 0;
+  }
+
+  .dayul-logos-split::after {
+    display: none;
+  }
+}
+
+.dayul-cup-row {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  width: 100%;
+}
+
+.dayul-cup-copy.project-body {
+  flex: 1 1 0;
+  min-width: 12rem;
+  max-width: none;
+  width: auto;
+  margin: 0;
+}
+
+.dayul-cup-copy p {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(0.92rem, 1.35vw, 1.02rem);
+  line-height: 1.65;
+}
+
+.dayul-cup-copy p + p {
+  margin-top: 1rem;
+}
+
+.dayul-cup-media {
+  margin: 0;
+  width: min(46.672rem, 58%);
+  flex: 0 1 auto;
+  overflow: hidden;
+  border-radius: 1em 0.35em 1.4em 0.55em / 0.9em 1.1em 0.45em 1.2em;
+}
+
+.dayul-cup-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-block: -1.3cm;
+  transform-origin: center center;
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dayul-cup-media:hover img {
+    transform: scale(1.04);
+  }
+}
+
+@media (max-width: 700px) {
+  .dayul-cup-row {
+    flex-direction: column;
+  }
+
+  .dayul-cup-media {
+    width: min(46.672rem, 100%);
+    align-self: flex-end;
+  }
+}
+
+.dayul-planning-subhead {
+  margin: 0 0 1.25rem;
+  color: var(--ink);
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.dayul-planning-subhead--activities {
+  position: static;
+  width: auto;
+  margin: 0 0 0.85rem;
+}
+
+.dayul-activities {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(50% - 0.75rem - 0.5cm);
+}
+
+.dayul-activities-row {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(0.4rem, 1vw, 0.65rem);
+  width: 100%;
+}
+
+.dayul-activities-media {
+  margin: 0;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 0.75em 0.3em 1em 0.4em / 0.7em 0.9em 0.35em 0.85em;
+}
+
+.dayul-activities-media:nth-child(2) {
+  border-radius: 0.35em 0.95em 0.4em 0.85em / 0.9em 0.4em 0.95em 0.45em;
+}
+
+.dayul-activities-media:nth-child(3) {
+  border-radius: 0.9em 0.35em 0.75em 0.5em / 0.45em 0.85em 0.4em 1em;
+}
+
+.dayul-activities-media:nth-child(4) {
+  border-radius: 0.4em 1em 0.45em 0.9em / 0.95em 0.4em 1em 0.45em;
+}
+
+.dayul-activities-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  transform-origin: center center;
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dayul-activities-media:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.dayul-activities-copy {
+  margin: 1rem 0 0;
+  color: var(--ink);
+  font-size: clamp(0.92rem, 1.35vw, 1.02rem);
+  line-height: 1.65;
+  width: 100%;
+}
+
+.dayul-halloween-block {
+  position: relative;
+  width: 100%;
+}
+
+.dayul-halloween-block::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: #cfcfcf;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.dayul-halloween-content {
+  width: calc(50% - 0.75rem - 0.5cm);
+  max-width: none;
+  margin-left: calc(50% + 0.75rem + 0.5cm);
+  padding-left: 0;
+  box-sizing: border-box;
+}
+
+.dayul-halloween-content .dayul-planning-subhead {
+  margin: 0 0 1.25rem;
+}
+
+.dayul-halloween-collage {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  min-height: clamp(22rem, 44vw, 34rem);
+}
+
+.dayul-halloween-copy {
+  margin: calc(1.25rem + 0.5cm) 0 0;
+  color: var(--ink);
+  font-size: clamp(0.92rem, 1.35vw, 1.02rem);
+  line-height: 1.65;
+  max-width: none;
+  width: 100%;
+}
+
+.dayul-halloween-item {
+  position: absolute;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), z-index 0s;
+  will-change: transform;
+}
+
+.dayul-halloween-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dayul-halloween-item:hover {
+    z-index: 20;
+  }
+
+  .dayul-halloween-item--1:hover { transform: rotate(-7deg) translateY(-1rem) scale(1.18); }
+  .dayul-halloween-item--2:hover { transform: rotate(6deg) translateY(-1rem) scale(1.18); }
+  .dayul-halloween-item--3:hover { transform: rotate(8deg) translateY(-1rem) scale(1.18); }
+  .dayul-halloween-item--4:hover { transform: rotate(-5deg) translateY(-1rem) scale(1.18); }
+  .dayul-halloween-item--5:hover { transform: rotate(7deg) translateY(-1rem) scale(1.18); }
+  .dayul-halloween-item--6:hover { transform: rotate(-6deg) translateY(-1rem) scale(1.18); }
+}
+
+.dayul-halloween-item--1 {
+  top: 5%;
+  left: 2%;
+  width: 30%;
+  height: 44%;
+  z-index: 3;
+  transform: rotate(-7deg);
+  border-radius: 1.1em 0.35em 1.25em 0.5em / 0.85em 1.1em 0.4em 1em;
+}
+
+.dayul-halloween-item--2 {
+  top: 1%;
+  left: calc(29% + 0.8cm);
+  width: 26%;
+  height: 48%;
+  z-index: 4;
+  transform: rotate(6deg);
+  border-radius: 0.4em 1.2em 0.5em 1.05em / 1.05em 0.45em 1.15em 0.5em;
+}
+
+.dayul-halloween-item--3 {
+  top: 4%;
+  right: 3%;
+  width: 35%;
+  height: 42%;
+  z-index: 2;
+  transform: rotate(8deg);
+  border-radius: 0.9em 0.4em 1.3em 0.45em / 0.5em 1em 0.55em 1.15em;
+}
+
+.dayul-halloween-item--4 {
+  bottom: 5%;
+  left: 6%;
+  width: 33%;
+  height: 40%;
+  z-index: 5;
+  transform: rotate(-5deg);
+  border-radius: 0.55em 1.1em 0.4em 1.2em / 1em 0.5em 1.1em 0.45em;
+}
+
+.dayul-halloween-item--5 {
+  bottom: 1%;
+  left: 36%;
+  width: 28%;
+  height: 46%;
+  z-index: 6;
+  transform: rotate(7deg);
+  border-radius: 1.15em 0.45em 0.9em 0.55em / 0.55em 1.15em 0.45em 1em;
+}
+
+.dayul-halloween-item--6 {
+  bottom: 7%;
+  right: 3%;
+  width: 32%;
+  height: 44%;
+  z-index: 3;
+  transform: rotate(-6deg);
+  border-radius: 0.45em 1.05em 0.7em 1.15em / 1.1em 0.5em 1em 0.45em;
+}
+
+@media (max-width: 700px) {
+  .dayul-halloween-block::after {
+    display: none;
+  }
+
+  .dayul-planning-subhead--activities {
+    position: static;
+    width: auto;
+    margin: 0 0 0.85rem;
+  }
+
+  .dayul-activities {
+    position: static;
+    width: 100%;
+    margin: 0 0 1.75rem;
+  }
+
+  .dayul-activities-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dayul-halloween-content {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .dayul-halloween-collage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    min-height: 0;
+    width: 100%;
+    max-width: none;
+  }
+
+  .dayul-halloween-item {
+    position: relative;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 3 / 4;
+    transform: none !important;
+  }
+}
+
+.dayul-other-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.25rem);
+  width: 100%;
+  position: relative;
+}
+
+.dayul-other-col {
+  min-width: 0;
+  position: relative;
+  max-width: none;
+}
+
+.dayul-other-title {
+  margin: 0 0 0.85rem;
+  color: var(--ink);
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.dayul-other-title--foot {
+  margin: 2rem 0 0.85rem;
+  text-align: left;
+}
+
+.dayul-foot-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) min(36.4rem, 48%);
+  grid-template-rows: auto auto;
+  column-gap: clamp(1.25rem, 3vw, 2.5rem);
+  row-gap: calc(1.25rem + 3cm);
+  align-items: start;
+  width: 100%;
+}
+
+.dayul-foot-copy.project-body {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  max-width: none;
+  width: auto;
+  margin: 0;
+}
+
+.dayul-foot-copy p {
+  margin: 0;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #cfcfcf;
+  color: var(--ink);
+  font-size: clamp(0.92rem, 1.35vw, 1.02rem);
+  line-height: 1.65;
+}
+
+.dayul-other-media.dayul-other-media--foot {
+  grid-column: 2;
+  grid-row: 1;
+  display: block;
+  width: 100%;
+  margin: 0;
+  flex: none;
+}
+
+.dayul-foot-signage-row {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(0.85rem, 2vw, 1.35rem);
+  margin-top: -7cm;
+  width: 100%;
+}
+
+.dayul-foot-signage {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 1em 0.35em 1.4em 0.55em / 0.9em 1.1em 0.45em 1.2em;
+  width: min(100%, 43.68rem);
+  flex: 0 1 auto;
+}
+
+.dayul-foot-signage img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: center center;
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.dayul-foot-signage-text {
+  flex: 1 1 0;
+  min-width: 12rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.dayul-other-title--signage {
+  margin: 0 0 0.65rem;
+  text-align: left;
+}
+
+.dayul-foot-signage-copy {
+  margin: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
+  color: var(--ink);
+  font-size: clamp(0.88rem, 1.25vw, 0.98rem);
+  line-height: 1.55;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dayul-foot-signage:hover img {
+    transform: scale(1.06);
+  }
+}
+
+@media (max-width: 700px) {
+  .dayul-foot-row {
+    grid-template-columns: 1fr;
+    row-gap: 1.25rem;
+  }
+
+  .dayul-other-media.dayul-other-media--foot {
+    grid-column: 1;
+    grid-row: auto;
+    width: min(36.4rem, 100%);
+  }
+
+  .dayul-foot-signage-row {
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 0;
+  }
+}
+
+.dayul-other-media-row {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(0.85rem, 2vw, 1.35rem);
+  width: 100%;
+}
+
+.dayul-other-card-side {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1 1 0;
+  min-width: min(100%, 28rem);
+  max-width: 52rem;
+  width: auto;
+  margin-left: 0.5cm;
+  overflow: visible;
+}
+
+.dayul-other-card-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.dayul-other-title--card {
+  margin: 0 0 0.85rem;
+  text-align: left;
+}
+
+.dayul-other-card-copy {
+  width: 100%;
+  max-width: none;
+  margin: auto 0 0.85rem;
+}
+
+.dayul-other-card-copy.project-body {
+  width: 100%;
+  max-width: none;
+}
+
+.dayul-other-card-copy p {
+  margin: 0 0 0.75rem;
+  color: var(--ink);
+  font-size: clamp(0.88rem, 1.25vw, 0.98rem);
+  line-height: 1.55;
+}
+
+.dayul-other-card-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.dayul-other-media {
+  margin: 0;
+  flex: 0 0 auto;
+  width: min(36.4rem, 42%);
+  overflow: hidden;
+  border-radius: 1em 0.35em 1.4em 0.55em / 0.9em 1.1em 0.45em 1.2em;
+}
+
+.dayul-other-alt-wrap {
+  position: relative;
+  width: 100%;
+  max-width: min(36.4rem, 100%);
+  margin-top: 0;
+}
+
+.dayul-other-alt-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: calc(-1 * clamp(0.75rem, 1.5vw, 1.25rem) - 6cm);
+  width: 3px;
+  background: #cfcfcf;
+  pointer-events: none;
+}
+
+.dayul-other-media--alt {
+  position: relative;
+  margin-left: 0;
+  margin-top: 0;
+  width: 100%;
+  max-width: none;
+  overflow: visible;
+  border-radius: 0;
+}
+
+.dayul-other-media--alt img {
+  border-radius: 0.4em 1.2em 0.5em 1.1em / 1.05em 0.45em 1.15em 0.5em;
+}
+
+.dayul-other-media--alt::after {
+  content: none;
+}
+
+.dayul-other-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: center center;
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (max-width: 700px) {
+  .dayul-other-media-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dayul-other-media,
+  .dayul-other-card-side {
+    width: min(36.4rem, 100%);
+    max-width: none;
+    margin-left: 0;
+  }
+
+  .dayul-other-card-copy {
+    margin-top: 0.85rem;
+  }
+
+  .dayul-other-media--alt::after,
+  .dayul-other-alt-wrap::after {
+    display: none;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dayul-other-media:hover img {
+    transform: scale(1.04);
+  }
+}
+
+.dayul-merch-body.project-body {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  width: 100%;
+  max-width: none;
+  container-type: inline-size;
+}
+
+.dayul-merch-col--lead {
+  flex: 0 0 35%;
+  max-width: 35%;
+}
+
+.dayul-merch-media {
+  margin: 1rem 0 0;
+  overflow: hidden;
+  border-radius: 1em 0.35em 1.4em 0.55em / 0.9em 1.1em 0.45em 1.2em;
+}
+
+.dayul-merch-media--side {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  margin-top: 0;
+  border-radius: 0.4em 1.2em 0.5em 1.1em / 1.05em 0.45em 1.15em 0.5em;
+}
+
+.dayul-merch-tote-row {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  width: 100cqi;
+  margin-top: calc(1rem + 1cm);
+  margin-left: calc(-35cqi - clamp(1.25rem, 3vw, 2.5rem));
+}
+
+.dayul-merch-tote-note {
+  flex: 0 0 35%;
+  max-width: 35%;
+  margin: 0;
+  text-align: right;
+  color: var(--ink);
+  font-size: clamp(0.92rem, 1.35vw, 1.02rem);
+  line-height: 1.55;
+}
+
+.dayul-merch-body p.dayul-merch-tote-note {
+  margin-top: 6.5cm;
+  margin-bottom: 0;
+}
+
+.dayul-merch-tote-count {
+  display: inline-block;
+  color: var(--purple);
+  font-weight: 700;
+  font-size: clamp(4.5rem, 9vw, 7rem);
+  line-height: 1.1;
+  margin-top: 0.5cm;
+}
+
+.dayul-merch-tote-label {
+  font-weight: 400;
+  color: var(--ink);
+  vertical-align: baseline;
+}
+
+.dayul-merch-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: center center;
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dayul-merch-media:hover img {
+    transform: scale(1.04);
+  }
+}
+
+.dayul-merch-col--side {
+  flex: 0 0 35%;
+  max-width: 35%;
+  min-width: 0;
+  overflow: visible;
+}
+
+.dayul-merch-side-copy {
+  position: relative;
+}
+
+.dayul-merch-side-copy::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: calc(-1 * clamp(0.75rem, 1.5vw, 1.25rem));
+  width: 3px;
+  background: #cfcfcf;
+  pointer-events: none;
+}
+
+.dayul-merch-body p {
+  margin: 0 0 1rem;
+  color: var(--ink);
+}
+
+.dayul-merch-col p:last-child {
+  margin-bottom: 0;
+}
+
+.dayul-merch-body .luag-list {
+  margin: 0.35rem 0 0;
+}
+
+@media (max-width: 700px) {
+  .dayul-merch-body {
+    flex-direction: column;
+  }
+
+  .dayul-merch-col--lead {
+    flex: 1 1 auto;
+    max-width: none;
+  }
+
+  .dayul-merch-col--side {
+    flex: 1 1 auto;
+    max-width: none;
+  }
+
+  .dayul-merch-tote-row {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .dayul-merch-tote-note {
+    flex: none;
+    max-width: none;
+    text-align: left;
+  }
+
+  .dayul-merch-media--side {
+    width: 100%;
+  }
+
+  .dayul-merch-side-copy::after {
+    display: none;
+  }
+}
+
 .luag-hero-panel--nabi {
   overflow: hidden;
 }
@@ -3767,6 +4623,18 @@ body:has(.umami-page-doodle) .to-top {
   transform: translateX(0);
 }
 
+.dayul-slide-ltr {
+  opacity: 0;
+  transform: translateX(-3.5rem);
+  transition: opacity 0.85s ease, transform 0.85s ease;
+  will-change: opacity, transform;
+}
+
+.dayul-slide-ltr.is-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .luag-progress {
   width: 100%;
   margin: 0 0 3.5rem;
@@ -3798,6 +4666,55 @@ body:has(.umami-page-doodle) .to-top {
   margin: 0 0 2.5rem;
   padding-bottom: 3.25rem;
   border-bottom: 3px solid #cfcfcf;
+}
+
+.luag-3d-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  width: 100%;
+}
+
+.luag-3d-media {
+  margin: 0;
+  flex: 0 1 auto;
+  width: min(42%, 28rem);
+  overflow: hidden;
+  border-radius: 1em 0.35em 1.4em 0.55em / 0.9em 1.1em 0.45em 1.2em;
+}
+
+.luag-3d-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.luag-3d-copy.project-body {
+  flex: 1 1 0;
+  min-width: 12rem;
+  width: auto;
+  max-width: none;
+  margin: 0;
+}
+
+.luag-3d-copy p {
+  margin: 0 0 1rem;
+  color: var(--ink);
+}
+
+.luag-3d-copy p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 700px) {
+  .luag-3d-layout {
+    flex-direction: column;
+  }
+
+  .luag-3d-media {
+    width: 100%;
+    max-width: 28rem;
+  }
 }
 
 .luag-final-row {

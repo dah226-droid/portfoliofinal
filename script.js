@@ -1641,7 +1641,7 @@
   }
 
   function initLuagReveal() {
-    const targets = Array.from(document.querySelectorAll('.luag-reveal, .luag-hero-copy'));
+    const targets = Array.from(document.querySelectorAll('.luag-reveal, .luag-hero-copy, .dayul-slide-ltr'));
     if (!targets.length) return;
 
     if (prefersReducedMotion) {
@@ -1654,17 +1654,63 @@
       return;
     }
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-in');
-          io.unobserve(entry.target);
-        });
-      },
-      { threshold: 0.2 }
-    );
-    targets.forEach((el) => io.observe(el));
+    const onceTargets = targets.filter((el) => !el.classList.contains('dayul-slide-replay'));
+    const replayTargets = targets.filter((el) => el.classList.contains('dayul-slide-replay'));
+
+    if (onceTargets.length) {
+      const onceIo = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-in');
+            onceIo.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.2 }
+      );
+      onceTargets.forEach((el) => onceIo.observe(el));
+    }
+
+    if (replayTargets.length) {
+      let lastScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+      let scrollingUp = false;
+
+      window.addEventListener(
+        'scroll',
+        () => {
+          const y = window.scrollY || document.documentElement.scrollTop || 0;
+          scrollingUp = y < lastScrollY;
+          lastScrollY = y;
+        },
+        { passive: true }
+      );
+
+      // Inset root so slide-out plays while text is still on screen
+      const replayIo = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const el = entry.target;
+            if (entry.isIntersecting) {
+              el.classList.add('is-in');
+              return;
+            }
+
+            // Only slide out when scrolling up (leaving through lower half).
+            // Scrolling down past the top keeps is-in.
+            const root = entry.rootBounds;
+            if (!root || !scrollingUp) return;
+            const rect = entry.boundingClientRect;
+            const elCenter = rect.top + rect.height / 2;
+            const rootCenter = (root.top + root.bottom) / 2;
+            if (elCenter >= rootCenter) {
+              el.classList.remove('is-in');
+            }
+          });
+        },
+        { threshold: [0, 0.2, 0.35, 0.5], rootMargin: '-18% 0px -18% 0px' }
+      );
+      replayTargets.forEach((el) => replayIo.observe(el));
+    }
   }
 
   function initNabiFlipbook() {
