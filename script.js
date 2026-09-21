@@ -2001,11 +2001,37 @@
   initUmamiHeroFloaters();
   initLuagCompass();
   initLuagDigitalHeights();
+  initLuagBraillePile();
   initResumePreview();
   initIgProfile();
   initIgPost();
   initCaseNav();
 })();
+
+function initLuagBraillePile() {
+  document.querySelectorAll('[data-luag-braille-pile]').forEach((pile) => {
+    const cards = Array.from(pile.querySelectorAll('.luag-braille-pile-card'));
+    if (cards.length < 2) return;
+
+    let order = cards.map((_, i) => i);
+
+    function applyOrder() {
+      order.forEach((cardIndex, depth) => {
+        const card = cards[cardIndex];
+        if (!card) return;
+        card.dataset.pileDepth = String(depth);
+      });
+    }
+
+    applyOrder();
+
+    pile.addEventListener('click', () => {
+      const front = order.shift();
+      order.push(front);
+      applyOrder();
+    });
+  });
+}
 
 function initLuagDigitalHeights() {
   const work = document.querySelector('.luag-digital-work img');
